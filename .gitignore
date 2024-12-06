@@ -3,3 +3,4 @@ obj/
 bin/
 *.dbmdl
 *.jfm
+/.tmp_

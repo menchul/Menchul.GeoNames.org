@@ -1,8 +1,0 @@
-﻿CREATE TABLE [gno].[Admin2Codes]
-(
-  [Code] VARCHAR(30) NOT NULL,
-  [Name] NVARCHAR(850) NOT NULL,--33
-  [NameASCII] VARCHAR(850) NOT NULL,--33
-  [GeoNameId] INT NOT NULL
-);
-GO

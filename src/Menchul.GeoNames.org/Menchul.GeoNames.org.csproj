@@ -14,6 +14,7 @@
         <Title>DB EF library for Geonames.org</Title>
         <PackageIcon>Menchul.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <ApplicationIcon>Menchul.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
@@ -54,6 +55,10 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Menchul.ico" />
     </ItemGroup>
 
     <ItemGroup>

@@ -10,7 +10,6 @@
         <Company>Menchul</Company>
         <RepositoryUrl>https://github.com/menchul/Menchul.GeoNames.org</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <ApplicationIcon>Menchul.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -30,9 +29,5 @@
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="dotnet format $(ProjectFileName)" />
     </Target>
-
-    <ItemGroup>
-        <Content Include="Menchul.ico" />
-    </ItemGroup>
 
 </Project>

@@ -4,6 +4,12 @@
     <Import Project="..\Menchul.GeoNames.org.props" />
 
     <PropertyGroup>
+        <!--<TargetFramework>net5.0</TargetFramework>-->
+        <!--<TargetFramework>net6.0</TargetFramework>-->
+        <!--<TargetFramework>net7.0</TargetFramework>-->
+        <!--<TargetFramework>net8.0</TargetFramework>-->
+        <!--<TargetFramework>net9.0</TargetFramework>-->
+        <TargetFrameworks>net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>DB EF library for Geonames.org</Title>
         <PackageIcon>Menchul.png</PackageIcon>

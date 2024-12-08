@@ -10,7 +10,7 @@
         <TargetFrameworks>net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
         <AssemblyCopyright>Menchul © 2024</AssemblyCopyright>
         <Copyright>Menchul © 2024</Copyright>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Authors>Ivan Perehynets</Authors>
         <Company>Menchul</Company>
         <RepositoryUrl>https://github.com/menchul/Menchul.GeoNames.org</RepositoryUrl>

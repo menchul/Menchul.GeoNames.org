@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\Menchul.GeoNames.org.props" />
+
+    <PropertyGroup>
+        <ProjectGuid>{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}</ProjectGuid>
+        <OutputType>Exe</OutputType>
+        <PlatformTarget>x64</PlatformTarget>
+        <AssemblyName>Menchul.Import.GeoNames.org</AssemblyName>
+        <AssemblyTitle>Menchul.Import.GeoNames.org</AssemblyTitle>
+        <AssemblyProduct>Menchul.Import.GeoNames.org</AssemblyProduct>
+        <AssemblyDescription>Tool for import data from GeoNames.org portal to MS SQL Server.</AssemblyDescription>
+        <ApplicationIcon>Menchul.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!--<PackageReference Include="EFCore.BulkExtensions" Version="8.1.2" />-->
+        <PackageReference Include="EFCore.BulkExtensions.PostgreSql" Version="9.0.0" />
+        <PackageReference Include="EFCore.BulkExtensions.SqlServer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="NLog" Version="5.3.4" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
+        <PackageReference Include="NLog.Schema" Version="5.3.4" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
+        <PackageReference Include="ShellProgressBar" Version="5.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Menchul.GeoNames.org\Menchul.GeoNames.org.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="NLog.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Menchul.ico" />
+    </ItemGroup>
+
+</Project>

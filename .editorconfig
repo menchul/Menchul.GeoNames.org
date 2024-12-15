@@ -1,0 +1,26 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = crlf
+insert_final_newline = false
+charset = utf-8
+indent_style = space
+
+[*.config]
+indent_size = 2
+
+[*.csproj]
+indent_size = 4
+
+[*.props]
+indent_size = 4
+
+[*.targets]
+indent_size = 4
+
+[*.cs]
+indent_size = 4

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <AssemblyCopyright>Menchul © 2024</AssemblyCopyright>
+        <Copyright>Menchul © 2024</Copyright>
+        <Version>2.0.1</Version>
+        <Authors>Ivan Perehynets</Authors>
+        <Company>Menchul</Company>
+        <RepositoryUrl>https://github.com/menchul/Menchul.GeoNames.org</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <Optimize>false</Optimize>
+        <EnvironmentName>Development</EnvironmentName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+        <EnvironmentName>Production</EnvironmentName>
+    </PropertyGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="dotnet format $(ProjectFileName)" />
+    </Target>
+
+</Project>

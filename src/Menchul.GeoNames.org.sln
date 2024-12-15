@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF742868-C107-449A-8F70-EFBA5E1873EC}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		..\deploy_MSSQL.cmd = ..\deploy_MSSQL.cmd
+		..\deploy_PostgreSQL.cmd = ..\deploy_PostgreSQL.cmd
+		..\LICENSE = ..\LICENSE
+		Menchul.GeoNames.org.props = Menchul.GeoNames.org.props
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.GeoNames.org", "Menchul.GeoNames.org\Menchul.GeoNames.org.csproj", "{06E086E8-ADFE-4E76-8D7E-E497ADEA5082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.GeoNames.org.PostgreSQL", "Menchul.GeoNames.org.PostgreSQL\Menchul.GeoNames.org.PostgreSQL.csproj", "{041AAD19-58E4-4639-BC6A-CFFB56940921}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.GeoNames.org.MSSQL", "Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj", "{8D97A2F2-B751-4BF6-AE85-F6A90CC37891}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.Import.GeoNames.org", "Menchul.Import.GeoNames.org\Menchul.Import.GeoNames.org.csproj", "{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06E086E8-ADFE-4E76-8D7E-E497ADEA5082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06E086E8-ADFE-4E76-8D7E-E497ADEA5082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06E086E8-ADFE-4E76-8D7E-E497ADEA5082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06E086E8-ADFE-4E76-8D7E-E497ADEA5082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041AAD19-58E4-4639-BC6A-CFFB56940921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041AAD19-58E4-4639-BC6A-CFFB56940921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041AAD19-58E4-4639-BC6A-CFFB56940921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041AAD19-58E4-4639-BC6A-CFFB56940921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D97A2F2-B751-4BF6-AE85-F6A90CC37891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D97A2F2-B751-4BF6-AE85-F6A90CC37891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D97A2F2-B751-4BF6-AE85-F6A90CC37891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D97A2F2-B751-4BF6-AE85-F6A90CC37891}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F43CF7D3-0143-4169-B98E-4B478B718AF4}
+	EndGlobalSection
+EndGlobal

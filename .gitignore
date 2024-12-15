@@ -3,3 +3,10 @@ obj/
 bin/
 *.dbmdl
 *.jfm
+/.tmp
+/.tmp_
+/.tmp__
+/tmp
+/tmp_
+/db
+/src/Menchul.Import.GeoNames.org/Properties/launchSettings.json

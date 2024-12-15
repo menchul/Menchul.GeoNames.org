@@ -1,0 +1,2 @@
+Entity Framework library for the database that was imported form [Geonames.org](https://www.geonames.org)
+Supported any relational database, that EF support. To import data from [Geonames.org](https://www.geonames.org) please visit [GitHub repository](https://github.com/menchul/Menchul.GeoNames.org)

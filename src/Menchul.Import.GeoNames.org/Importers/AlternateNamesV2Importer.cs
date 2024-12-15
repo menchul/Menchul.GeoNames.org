@@ -17,6 +17,80 @@ namespace Menchul.Import.GeoNames.org.Importers
     internal class AlternateNamesV2Importer : BaseImporter
     {
         private const uint __magicNumber = 100_000;
+        private readonly HashSet<uint> __namesToRemove = new HashSet<uint>
+        {
+            17416183,
+            2432644,
+            7841995,
+
+            17436381 /* Cherkasy */,
+            8487117  /* Chernihiv */,
+            17436392 /* Chernivtsi */,
+            17436365 /* Dnipropetrovsk */,
+            16868887 /* Donetsk */,
+            17439886 /* Ivano-Frankivsk */,
+            16868884 /* Kharkiv */,
+            5650373  /* Kharkivs’ka Oblast’ */,
+            17436390 /* Kherson */,
+            17436387 /* Khmelnytskyi */,
+            17436373 /* Kirovohrad */,
+            16453734 /* Crimea */,
+            8791795  /* Republic of Crimea */,
+            8487107  /* Kiev */,
+            8556550  /* Kiev Oblast */,
+            13332554 /* Kyiv */,
+            8556560  /* Kyivshchyna */,
+            16868882 /* Luhansk */,
+            16868881 /* Lviv */,
+            17436370 /* Mykolaiv */,
+            17436367 /* Odesa */,
+            11284660 /* Odesa region */,
+            16608411 /* Odessa */,
+            17435484 /* Poltava */,
+            16868878 /* Rivne */,
+            13720982 /* Sebastopol City */,
+            16868877 /* Sumy */,
+            17439880 /* Ternopil */,
+            17436384 /* Vinnytsia */,
+            16868875 /* Volyn */,
+            11990568 /* Transcarpathia */,
+            17433769 /* Zakarpattia */,
+            17436391 /* Zaporizhzhia */,
+            16868873 /* Zhytomyr */,
+
+            11990322 /* Lower Silesia */,
+            13962465 /* Lower Silesian */,
+            5463437  /* Kujawsko-Pomorskie */,
+            13962471 /* Kuyavian-Pomeranian */,
+            12095140 /* Lublin */,
+            12095139 /* Lublin Province */,
+            5463452  /* Lubusz */,
+            1636267  /* Lubusz Voivodship */,
+            13962464 /* Lesser Poland */,
+            13962466 /* Masovian */,
+            11990469 /* Mazovia */,
+            11990468 /* Mazovia Province */,
+            13962470 /* Subcarpathia */,
+            13962467 /* Podlachian */,
+            5463453  /* Podlasie */,
+            1636402  /* Podlasie Voivodship */,
+            11990471 /* Pomerania */,
+            11990470 /* Pomerania Province */,
+            12133956 /* Silesia */,
+            5463454  /* Świętokrzyskie */,
+            1636380  /* Świętokrzyskie Voivodship */,
+            11990328 /* Warmia-Masuria */,
+            11990327 /* Warmia-Masuria Province */,
+            13962468 /* Warmian-Masurian */,
+            11990321 /* Greater Poland */,
+            11990320 /* West Pomerania */,
+            13962469 /* West Pomeranian */,
+            11990319 /* West Pomerania Province */,
+
+
+            9711883 /* Lubelskie */,
+            2185032 /* woj.warmińsko - mazurskie */
+        };
 
         public AlternateNamesV2Importer(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
@@ -132,6 +206,16 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                             try
                             {
+                                uint geoNameId = uint.Parse(values[0]);
+
+                                if (__importerParameters.NormalizeData)
+                                {
+                                    if (__namesToRemove.Contains(geoNameId))
+                                    {
+                                        continue;
+                                    }
+                                }
+
                                 string language = GetNullIfEmpty(values[2]);
 
                                 if (string.Equals(language, "ru", StringComparison.InvariantCultureIgnoreCase))
@@ -146,7 +230,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                                     continue;
                                 }
 
-                                if (__importerParameters.IgnoreBadNames)
+                                if (__importerParameters.NormalizeData)
                                 {
                                     if (!IsTextOnLanguage(name, language))
                                     {
@@ -163,7 +247,7 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                                 var alternateNameV2 = new AlternateNameV2
                                 {
-                                    GeoNameId = uint.Parse(values[0]),
+                                    GeoNameId = geoNameId,
                                     GeoNameIdRef = geoNameIdRef,
                                     Language = language,
                                     Name = name,

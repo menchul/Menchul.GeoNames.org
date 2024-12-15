@@ -87,6 +87,11 @@ namespace Menchul.Import.GeoNames.org
                 await importer!.DoImport();
             }
 
+            if (importerParameters.NormalizeData)
+            {
+                await Normalizer.Normalize(__dbContext);
+            }
+
             ReadKey();
         }
 

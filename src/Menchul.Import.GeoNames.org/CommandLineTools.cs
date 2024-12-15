@@ -102,8 +102,8 @@ namespace Menchul.Import.GeoNames.org
                     case "--importOnlyAP":
                         importParameters.ImportOnlyAP = true;
                         break;
-                    case "--ignoreBadNames":
-                        importParameters.IgnoreBadNames = true;
+                    case "--normalizeData":
+                        importParameters.NormalizeData = true;
                         break;
                 }
             }

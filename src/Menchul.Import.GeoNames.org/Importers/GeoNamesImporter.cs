@@ -147,6 +147,16 @@ namespace Menchul.Import.GeoNames.org.Importers
                                     }
                                 }
 
+                                string countryCodesAlternate = GetNullIfEmpty(values[9]);
+
+                                if (__importerParameters.NormalizeData)
+                                {
+                                    if (string.Equals(countryCode, countryCodesAlternate, StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        countryCodesAlternate = null;
+                                    }
+                                }
+
                                 var geoName = new GeoName
                                 {
                                     GeoNameId = uint.Parse(values[0]),
@@ -158,7 +168,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                                     FeatureClassCode = featureClassCode,
                                     FeatureCodeCode = featureCodeCode,
                                     CountryCode = countryCode,
-                                    CountryCodesAlternate = GetNullIfEmpty(values[9]),
+                                    CountryCodesAlternate = countryCodesAlternate,
                                     Admin1Code = GetNullIfEmpty(values[10]),
                                     Admin2Code = GetNullIfEmpty(values[11]),
                                     Admin3Code = GetNullIfEmpty(values[12]),

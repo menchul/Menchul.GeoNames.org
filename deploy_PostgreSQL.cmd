@@ -1,4 +1,4 @@
-set GeoNamesOrg__ConnectionStrings=Host=localhost;Port=5433;Database=GeoNames.org;Username=postgres;Password=1qaz@WSX;CommandTimeout=10;
+set GeoNamesOrg__ConnectionStrings=Host=localhost;Port=5433;Database=GeoNames.org;Username=postgres;Password=<PASSWORD>;CommandTimeout=10;
 set prj=.\src\Menchul.GeoNames.org\Menchul.GeoNames.org.csproj
 set src=.\src\Menchul.GeoNames.org.PostgreSQL\Menchul.GeoNames.org.PostgreSQL.csproj
 set pkj=Npgsql.EntityFrameworkCore.PostgreSQL

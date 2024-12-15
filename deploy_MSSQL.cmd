@@ -1,4 +1,4 @@
-set GeoNamesOrg__ConnectionStrings=Server=localhost;Database=GeoNames.org;Persist Security Info=True;User ID=sa;Password=1qaz@WSX;Connect Timeout=10;Encrypt=False;Trust Server Certificate=True;
+set GeoNamesOrg__ConnectionStrings=Server=localhost;Database=GeoNames.org;Persist Security Info=True;User ID=sa;Password=<PASSWORD>;Connect Timeout=10;Encrypt=False;Trust Server Certificate=True;
 set prj=.\src\Menchul.GeoNames.org\Menchul.GeoNames.org.csproj
 set src=.\src\Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj
 set pkj=Microsoft.EntityFrameworkCore.SqlServer

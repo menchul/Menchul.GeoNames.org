@@ -18,22 +18,34 @@ namespace Menchul.Import.GeoNames.org.Importers
 
         protected static readonly Encoding __encoding = Encoding.UTF8;
         protected static readonly IFormatProvider __numberFormatInfo = new NumberFormatInfo();
-        protected static readonly ProgressBarOptions __progressBarOptions = new()
-        {
-            BackgroundCharacter = '\u2592',// '\u2591',
-            BackgroundColor = ConsoleColor.DarkGreen,
-            ForegroundColor = ConsoleColor.Green,
-            EnableTaskBarProgress = true,
-            CollapseWhenFinished = true,
-            PercentageFormat = "{0:N0}% "
-        };
-
+        protected static readonly ProgressBarOptions __progressBarOptions;
 
         protected readonly GeoNamesOrgDbContext __dbContext;
         protected readonly ILogger __logger;
         protected readonly ImporterParameters __importerParameters;
 
         protected ProgressBar _pbar;
+
+        static BaseImporter()
+        {
+            __progressBarOptions = new()
+            {
+                BackgroundCharacter = '\u2592',// '\u2591',
+                BackgroundColor = ConsoleColor.DarkGreen,
+                ForegroundColor = ConsoleColor.Green,
+                EnableTaskBarProgress = false,
+                CollapseWhenFinished = true,
+                PercentageFormat = "{0:N0}% "
+            };
+
+            OperatingSystem os = Environment.OSVersion;
+            PlatformID pl = os.Platform;
+
+            if (pl == PlatformID.Win32NT)
+            {
+                __progressBarOptions.EnableTaskBarProgress = true;
+            }
+        }
 
         protected BaseImporter(
             GeoNamesOrgDbContext dbContext,

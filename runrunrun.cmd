@@ -1,0 +1,1 @@
+dotnet run -c Release --project .\src\Menchul.Import.GeoNames.org\Menchul.Import.GeoNames.org.csproj --importOnlyAP --normalizeData --tempFolder "C:\GitHub\GeoNames.org\.tmp" --server PostgreSQL --connectionString "Host=localhost;Port=5433;Database=GeoNames.org;Username=postgres;Password=1qaz@WSX;CommandTimeout=999999;"

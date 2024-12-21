@@ -20,7 +20,7 @@ dotnet ef migrations add InitialMigration -p $prj -s $src $net
 
 echo ***** Database uprading...
 
-dotnet ef database update -p $prj -s "$src" $net
+dotnet ef database update -p $prj -s $src $net
 
 echo ***** Removing migrations...
 

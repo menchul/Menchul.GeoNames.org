@@ -8,5 +8,6 @@ bin/
 /.tmp__
 /tmp
 /tmp_
-/db
 /src/Menchul.Import.GeoNames.org/Properties/launchSettings.json
+db/.MSSQL/
+db/.postgresql_data/

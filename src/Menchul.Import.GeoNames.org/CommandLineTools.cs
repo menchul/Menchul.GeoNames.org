@@ -23,7 +23,7 @@ namespace Menchul.Import.GeoNames.org
                     case "/help":
                         ShowHelp();
 
-                        return null;
+                        throw new Exception();
                     case "--server":
                         i++;
 
@@ -31,7 +31,7 @@ namespace Menchul.Import.GeoNames.org
                         {
                             WriteError("Bad Server");
 
-                            return null;
+                            throw new Exception();
                         }
 
                         string srv = args[i].Trim();
@@ -53,6 +53,7 @@ namespace Menchul.Import.GeoNames.org
 
                         break;
                     case "--connectionString":
+                    case "--connection":
                     case "-cs":
                         i++;
 
@@ -60,7 +61,7 @@ namespace Menchul.Import.GeoNames.org
                         {
                             WriteError(Resources.BAD_CONNECTION_STRING);
 
-                            return null;
+                            throw new Exception();
                         }
 
                         string connectionString = args[i];
@@ -69,7 +70,7 @@ namespace Menchul.Import.GeoNames.org
                         {
                             WriteError(Resources.BAD_CONNECTION_STRING);
 
-                            return null;
+                            throw new Exception();
                         }
 
                         importParameters.ConnectionString = connectionString;
@@ -83,7 +84,7 @@ namespace Menchul.Import.GeoNames.org
                         {
                             WriteError(Resources.BAD_TEMPORARY_FOLDER);
 
-                            return null;
+                            throw new Exception();
                         }
 
                         string tempFolderName = args[i];
@@ -93,7 +94,7 @@ namespace Menchul.Import.GeoNames.org
                         {
                             WriteError(Resources.BAD_TEMPORARY_FOLDER);
 
-                            return null;
+                            throw new Exception();
                         }
 
                         importParameters.TempFolder = tempFolderName;

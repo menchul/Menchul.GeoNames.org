@@ -8,7 +8,7 @@ namespace Menchul.GeoNames.org.MSSQL
         {
         }
 
-        public GeoNamesOrgMSSQLDbContext(DbContextOptions<GeoNamesOrgDbContext> options)
+        public GeoNamesOrgMSSQLDbContext(DbContextOptions<GeoNamesOrgMSSQLDbContext> options)
             : base(options)
         {
         }

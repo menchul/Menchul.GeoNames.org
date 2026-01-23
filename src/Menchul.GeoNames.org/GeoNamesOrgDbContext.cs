@@ -11,7 +11,7 @@ namespace Menchul.GeoNames.org
         {
         }
 
-        protected GeoNamesOrgDbContext(DbContextOptions<GeoNamesOrgDbContext> options)
+        protected GeoNamesOrgDbContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -24,22 +24,22 @@ namespace Menchul.GeoNames.org
         }
 
 
-        public DbSet<ISOLanguage>? ISOLanguages { get; set; }
+        public DbSet<ISOLanguage> ISOLanguages { get; set; } = default!;
 
-        public DbSet<FeatureClass>? FeatureClasses { get; set; }
+        public DbSet<FeatureClass> FeatureClasses { get; set; } = default!;
 
-        public DbSet<FeatureCode>? FeatureCodes { get; set; }
+        public DbSet<FeatureCode> FeatureCodes { get; set; } = default!;
 
-        public DbSet<FeatureCodeName>? FeatureCodeNames { get; set; }
+        public DbSet<FeatureCodeName> FeatureCodeNames { get; set; } = default!;
 
-        public DbSet<Continent>? Continents { get; set; }
+        public DbSet<Continent> Continents { get; set; } = default!;
 
-        public DbSet<Country>? Countries { get; set; }
+        public DbSet<Country> Countries { get; set; } = default!;
 
-        public DbSet<TimeZone>? TimeZones { get; set; }
+        public DbSet<TimeZone> TimeZones { get; set; } = default!;
 
-        public DbSet<GeoName>? GeoNames { get; set; }
+        public DbSet<GeoName> GeoNames { get; set; } = default!;
 
-        public DbSet<AlternateNameV2>? AlternateNamesV2 { get; set; }
+        public DbSet<AlternateNameV2> AlternateNamesV2 { get; set; } = default!;
     }
 }

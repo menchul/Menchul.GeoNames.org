@@ -52,15 +52,8 @@ namespace Menchul.Import.GeoNames.org.Importers
                 {
                     __logger.LogTrace("Analyzing file...");
 
-                    while (file.CanRead && !reader.EndOfStream)
+                    while (await reader.ReadLineAsync() is not null)
                     {
-                        string line = await reader.ReadLineAsync();
-
-                        if (line == null)
-                        {
-                            break;
-                        }
-
                         totalRecords++;
                     }
 
@@ -72,7 +65,9 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                     using (_pbar = new(100, "", __progressBarOptions))
                     {
-                        while (file.CanRead && !reader.EndOfStream)
+                        string? line;
+
+                        while ((line = await reader.ReadLineAsync()) is not null)
                         {
                             #region console log
 
@@ -102,19 +97,11 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                             #endregion console log
 
-
-                            string line = await reader.ReadLineAsync();
-
-                            if (line == null)
-                            {
-                                break;
-                            }
-
                             string[] values = line.Split('\t');
 
                             try
                             {
-                                string countryCode = GetNullIfEmpty(values[8]);
+                                string? countryCode = GetNullIfEmpty(values[8]);
 
                                 if (countryCode == __404)
                                 {
@@ -122,7 +109,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                                 }
 
                                 char? featureClassCode = GetNullIfEmpty(values[6]) == null ? null : values[6][0];
-                                string featureCodeCode = GetNullIfEmpty(values[7]);
+                                string? featureCodeCode = GetNullIfEmpty(values[7]);
 
                                 if (__importerParameters.ImportOnlyAP)
                                 {
@@ -147,7 +134,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                                     }
                                 }
 
-                                string countryCodesAlternate = GetNullIfEmpty(values[9]);
+                                string? countryCodesAlternate = GetNullIfEmpty(values[9]);
 
                                 if (__importerParameters.NormalizeData)
                                 {

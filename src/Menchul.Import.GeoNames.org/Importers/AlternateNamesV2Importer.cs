@@ -109,7 +109,7 @@ namespace Menchul.Import.GeoNames.org.Importers
 
             __logger.LogDebug("Old data was deleted.");
 
-            HashSet<uint> geoNamesIds = await __dbContext.GeoNames.Select(x => x.GeoNameId).OrderBy(x => x).ToHashSetAsync();
+            HashSet<uint>? geoNamesIds = await __dbContext.GeoNames.Select(x => x.GeoNameId).OrderBy(x => x).ToHashSetAsync();
 
             string fileName = Path.Combine(ArchiveFolder, "alternateNamesV2.txt");
 
@@ -127,15 +127,8 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                     __logger.LogTrace("Analyzing file...");
 
-                    while (file.CanRead && !reader.EndOfStream)
+                    while (await reader.ReadLineAsync() is not null)
                     {
-                        string line = await reader.ReadLineAsync();
-
-                        if (line == null)
-                        {
-                            break;
-                        }
-
                         totalRecords++;
                     }
 
@@ -150,8 +143,9 @@ namespace Menchul.Import.GeoNames.org.Importers
                     using (_pbar = new(100, "", __progressBarOptions))
                     {
                         var alternateNames = new List<AlternateNameV2>();
+                        string? line;
 
-                        while (file.CanRead && !reader.EndOfStream)
+                        while ((line = await reader.ReadLineAsync()) is not null)
                         {
                             #region console log
 
@@ -193,16 +187,7 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                             #endregion console log
 
-
-                            string line = await reader.ReadLineAsync();
-
-                            if (line == null)
-                            {
-                                break;
-                            }
-
                             string[] values = line.Split('\t');
-
 
                             try
                             {
@@ -216,14 +201,14 @@ namespace Menchul.Import.GeoNames.org.Importers
                                     }
                                 }
 
-                                string language = GetNullIfEmpty(values[2]);
+                                string? language = GetNullIfEmpty(values[2]);
 
                                 if (string.Equals(language, "ru", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     continue;
                                 }
 
-                                string name = GetNullIfEmpty(values[3]);
+                                string? name = GetNullIfEmpty(values[3]);
 
                                 if (name == null)
                                 {
@@ -277,7 +262,6 @@ namespace Menchul.Import.GeoNames.org.Importers
             await __dbContext.SaveChangesAsync();
 
             geoNamesIds.Clear();
-            geoNamesIds = null;
 
             //await __dbContext.TimeZones.Where(x => x.CountryCode == "RU").ExecuteDeleteAsync();
 
@@ -301,7 +285,7 @@ namespace Menchul.Import.GeoNames.org.Importers
         private const string alphabet_be = @"АБВГДЕЁЖЗІЙКЛМНОПРСТУЎФХЦЧШЫЬЭЮЯ";
         private readonly Regex regex_be = new Regex($"[{alphabet_be}]");
 
-        private Regex GetAlphabetRegex(string language)
+        private Regex? GetAlphabetRegex(string? language)
         {
             switch (language)
             {
@@ -313,9 +297,14 @@ namespace Menchul.Import.GeoNames.org.Importers
             }
         }
 
-        private bool IsTextOnLanguage(string text, string language)
+        private bool IsTextOnLanguage(string text, string? language)
         {
-            Regex regExp = GetAlphabetRegex(language);
+            if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(language))
+            {
+                return true;
+            }
+
+            Regex? regExp = GetAlphabetRegex(language);
 
             if (regExp == null)
             {

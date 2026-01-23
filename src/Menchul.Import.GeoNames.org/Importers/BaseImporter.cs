@@ -24,7 +24,7 @@ namespace Menchul.Import.GeoNames.org.Importers
         protected readonly ILogger __logger;
         protected readonly ImporterParameters __importerParameters;
 
-        protected ProgressBar _pbar;
+        protected ProgressBar? _pbar;
 
         static BaseImporter()
         {
@@ -66,9 +66,9 @@ namespace Menchul.Import.GeoNames.org.Importers
 
         protected string DownloadFileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileURL);
 
-        protected string LocalFileName => Path.Combine(__importerParameters.TempFolder, DownloadFileName);
+        protected string LocalFileName => Path.Combine(__importerParameters.TempFolder!, DownloadFileName);
 
-        protected string ArchiveFolder => Path.Combine(__importerParameters.TempFolder, DownloadFileNameWithoutExtension);
+        protected string ArchiveFolder => Path.Combine(__importerParameters.TempFolder!, DownloadFileNameWithoutExtension);
 
         public bool IsZIPed => string.Equals(".zip", DownloadFileExtension, StringComparison.InvariantCultureIgnoreCase);
 
@@ -89,7 +89,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                     {
                         __logger.LogTrace($"File \"{LocalFileName}\" started UnZIPing...");
 
-                        ZipFile.ExtractToDirectory(LocalFileName, ArchiveFolder);
+                        await ZipFile.ExtractToDirectoryAsync(LocalFileName, ArchiveFolder);
 
                         __logger.LogTrace($"File \"{LocalFileName}\" UnZIPed.");
                     }
@@ -110,7 +110,7 @@ namespace Menchul.Import.GeoNames.org.Importers
         protected abstract Task ImportData();
 
 
-        protected static string GetNullIfEmpty(string s)
+        protected static string? GetNullIfEmpty(string s)
         {
             return string.IsNullOrWhiteSpace(s) ? null : s;
         }
@@ -150,7 +150,7 @@ namespace Menchul.Import.GeoNames.org.Importers
         {
             var ewc = (ExtendedWebClient)sender;
 
-            _pbar.Tick(e.ProgressPercentage, $"{ewc.FileName} - bytes received {e.BytesReceived:### ### ###} from total {e.TotalBytesToReceive:### ### ###} bytes.");
+            _pbar!.Tick(e.ProgressPercentage, $"{ewc.FileName} - bytes received {e.BytesReceived:### ### ###} from total {e.TotalBytesToReceive:### ### ###} bytes.");
         }
     }
 }

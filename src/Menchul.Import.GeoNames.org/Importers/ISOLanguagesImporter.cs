@@ -40,8 +40,8 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                 try
                 {
-                    string iso3 = GetNullIfEmpty(values[0]);
-                    string iso2 = GetNullIfEmpty(values[1]);
+                    string? iso3 = GetNullIfEmpty(values[0]);
+                    string? iso2 = GetNullIfEmpty(values[1]);
 
                     if (iso2 != null && iso2.Contains('/'))
                     {
@@ -55,14 +55,14 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                     if (isoAlreadyExists)
                     {
-                        duplicates.Add(iso3);
+                        duplicates.Add(iso3!);
 
                         continue;
                     }
 
                     var language = new ISOLanguage
                     {
-                        ISO639_3 = iso3,
+                        ISO639_3 = iso3!,
                         ISO639_2 = iso2,
                         ISO639_1 = GetNullIfEmpty(values[2]),
                         Name = values[3]

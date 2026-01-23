@@ -12,12 +12,12 @@
         <AssemblyTitle>Menchul.Import.GeoNames.org</AssemblyTitle>
         <AssemblyProduct>Menchul.Import.GeoNames.org</AssemblyProduct>
         <AssemblyDescription>Tool for import data from GeoNames.org portal to MS SQL Server.</AssemblyDescription>
+        <NoWarn>$(NoWarn);SYSLIB0014</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="EFCore.BulkExtensions.PostgreSql" Version="10.0.0" />
         <PackageReference Include="EFCore.BulkExtensions.SqlServer" Version="10.0.0" />
-        <!--<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />-->
         <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
         <PackageReference Include="NLog" Version="6.0.7" />
         <PackageReference Include="NLog.Extensions.Logging" Version="6.1.0" />

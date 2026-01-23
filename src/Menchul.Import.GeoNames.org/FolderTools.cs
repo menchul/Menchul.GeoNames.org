@@ -28,7 +28,9 @@ namespace Menchul.Import.GeoNames.org
 
             if (isWindows)
             {
+#if WINDOWS
                 GrantAccess(tempFolderName);
+#endif
             }
 
             Console.WriteLine("Temp folder is: " + tempFolderName);
@@ -36,6 +38,7 @@ namespace Menchul.Import.GeoNames.org
             return tempFolderName;
         }
 
+#if WINDOWS
         private static void GrantAccess(string fullPath)
         {
             var directoryInfo = new DirectoryInfo(fullPath);
@@ -46,5 +49,6 @@ namespace Menchul.Import.GeoNames.org
             dSecurity.AddAccessRule(rule);
             directoryInfo.SetAccessControl(dSecurity);
         }
+#endif
     }
 }

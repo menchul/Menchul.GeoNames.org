@@ -25,7 +25,7 @@ namespace Menchul.Import.GeoNames.org.Importers
             foreach (string language in __languages)
             {
                 string downloadFileName = $"featureCodes_{language}.txt";
-                string localFileName = Path.Combine(__importerParameters.TempFolder, downloadFileName);
+                string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
 
                 if (File.Exists(localFileName))
                 {
@@ -52,7 +52,7 @@ namespace Menchul.Import.GeoNames.org.Importers
             foreach (string language in __languages)
             {
                 string downloadFileName = $"featureCodes_{language}.txt";
-                string localFileName = Path.Combine(__importerParameters.TempFolder, downloadFileName);
+                string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
 
                 string[] lines = await File.ReadAllLinesAsync(localFileName, __encoding);
 
@@ -72,7 +72,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                         string featureCodeCode = values[0].Substring(2);
                         char featureClassCode = values[0][0];
                         string name = values[1];
-                        string description = GetNullIfEmpty(values[2]);
+                        string? description = GetNullIfEmpty(values[2]);
 
                         bool fcEx = featureCodes.Any(x => x.Code == featureCodeCode);
 

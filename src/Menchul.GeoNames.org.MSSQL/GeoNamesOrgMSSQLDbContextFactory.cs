@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Menchul.GeoNames.org.MSSQL
 {
-    public class GeoNamesOrgMSSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgDbContext>
+    public class GeoNamesOrgMSSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgMSSQLDbContext>
     {
         private readonly string? __connectionString;
 
@@ -17,7 +17,7 @@ namespace Menchul.GeoNames.org.MSSQL
             __connectionString = connectionString;
         }
 
-        public GeoNamesOrgDbContext CreateDbContext(string[]? args = null)
+        public GeoNamesOrgMSSQLDbContext CreateDbContext(string[]? args = null)
         {
             string? connectionString = null;
 
@@ -35,7 +35,7 @@ namespace Menchul.GeoNames.org.MSSQL
                 connectionString = __connectionString;
             }
 
-            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgMSSQLDbContext>();
             optionsBuilder.UseSqlServer(connectionString);
 
             var geoNamesOrgDbContext = new GeoNamesOrgMSSQLDbContext(optionsBuilder.Options);

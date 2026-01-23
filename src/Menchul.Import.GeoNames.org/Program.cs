@@ -1,6 +1,7 @@
 using Menchul.GeoNames.org;
+using Menchul.GeoNames.org.MSSQL;
 using Menchul.Import.GeoNames.org.Importers;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
@@ -15,7 +16,7 @@ namespace Menchul.Import.GeoNames.org
 {
     public static class Program
     {
-        private static GeoNamesOrgDbContext __dbContext;
+        private static GeoNamesOrgDbContext? __dbContext;
 
         [STAThread]
         private static async Task Main(string[] args)
@@ -26,29 +27,33 @@ namespace Menchul.Import.GeoNames.org
             if (!args.Any())
             {
                 CommandLineTools.ShowHelp();
-
                 return;
             }
 
-            ImporterParameters importerParameters = CommandLineTools.ParseCommandLineParameters(args);
+            //https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.commandlineconfigurationextensions.addcommandline?view=net-9.0-pp#microsoft-extensions-configuration-commandlineconfigurationextensions-addcommandline(microsoft-extensions-configuration-iconfigurationbuilder-system-action((microsoft-extensions-configuration-commandline-commandlineconfigurationsource)))
+            // dotnet run key1=value1 --key2=value2 /key3=value3 --key4 value4 /key5 value5
+            var builder = new ConfigurationBuilder();
+            builder.AddCommandLine(args);
 
-            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgDbContext>();
-            DbContextOptionsBuilder<GeoNamesOrgDbContext> dbContextOptionsBuilder;
+            var config = builder.Build();
+
+            Console.WriteLine($"Key1: '{config["Key1"]}'");
+
+            ImporterParameters importerParameters = CommandLineTools.ParseCommandLineParameters(args);
 
             switch (importerParameters.Server)
             {
                 case Server.MSSQL:
-                    dbContextOptionsBuilder = optionsBuilder.UseSqlServer(importerParameters.ConnectionString);
+                    var msSQLDbContextFactory = new GeoNamesOrgMSSQLDbContextFactory(importerParameters.ConnectionString);
+                    __dbContext = msSQLDbContextFactory.CreateDbContext();
                     break;
                 case Server.PostgreSQL:
-                    dbContextOptionsBuilder = optionsBuilder.UseNpgsql(importerParameters.ConnectionString);
+                    var postgreDbContextFactory = new GeoNamesOrgMSSQLDbContextFactory(importerParameters.ConnectionString);
+                    __dbContext = postgreDbContextFactory.CreateDbContext();
                     break;
                 default:
                     throw new NotImplementedException($"Please implement logic for the server \"{importerParameters.Server}\"");
             }
-
-            DbContextOptions<GeoNamesOrgDbContext> contextOptions = dbContextOptionsBuilder.Options;
-            __dbContext = new GeoNamesOrgDbContext(contextOptions);
 
             if (importerParameters.TempFolder == null)
             {

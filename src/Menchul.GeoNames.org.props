@@ -2,31 +2,39 @@
 <Project>
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <AssemblyCopyright>Menchul © 2024</AssemblyCopyright>
         <Copyright>Menchul © 2024</Copyright>
-        <Version>2.0.1</Version>
+        <Version>2.1.0</Version>
         <Authors>Ivan Perehynets</Authors>
         <Company>Menchul</Company>
         <RepositoryUrl>https://github.com/menchul/Menchul.GeoNames.org</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DebugType>full</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <Optimize>false</Optimize>
         <EnvironmentName>Development</EnvironmentName>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
         <Optimize>true</Optimize>
         <EnvironmentName>Production</EnvironmentName>
     </PropertyGroup>
 
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <PropertyGroup >
+        <ApplicationIcon>..\..\Menchul.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup >
+        <Content Include="..\..\Menchul.ico" />
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Debug'">
         <Exec Command="dotnet format $(ProjectFileName)" />
     </Target>
 

@@ -1,16 +1,15 @@
+using Menchul.GeoNames.org.Models.Base;
 using System.Collections.Generic;
 
 namespace Menchul.GeoNames.org.Models
 {
-    public record Continent
+    public class Continent : BaseGeoNameIdEntity
     {
-        public uint GeoNameId { get; set; }
+        public string ISO2 { get; set; } = default!;
 
-        public string ISO2 { get; set; }
+        public string Name { get; set; } = default!;
 
-        public string Name { get; set; }
-
-        public virtual List<Country> Countries { get; set; }
+        public virtual List<Country>? Countries { get; set; }
 
 
 

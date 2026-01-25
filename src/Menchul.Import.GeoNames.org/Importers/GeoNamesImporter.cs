@@ -1,6 +1,7 @@
 using EFCore.BulkExtensions;
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,10 +19,12 @@ namespace Menchul.Import.GeoNames.org.Importers
         private static readonly HashSet<string> __featureCodesDisabled = ["ADM1H", "ADM2H", "ADM3H", "ADM4H", "ADM5H", "ADMDH", "HSTS", "PCLH", "PPLCH", "PPLH", "RGNH"];
         internal static readonly HashSet<string> __nonExistingCountries = ["YU", ((char)82 + (char)85).ToString()];
 
-        public GeoNamesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public GeoNamesImporter(GeoNamesOrgDbContext dbContext, ILogger<GeoNamesImporter> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
+
+        public override byte Order => 4;
 
         protected override string FileURL => __baseUrl + "allCountries.zip";
 

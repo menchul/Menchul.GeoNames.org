@@ -1,5 +1,6 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,12 +11,15 @@ namespace Menchul.Import.GeoNames.org.Importers
 {
     internal sealed class CountriesImporter : BaseImporter
     {
-        public CountriesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public CountriesImporter(GeoNamesOrgDbContext dbContext, ILogger<CountriesImporter> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
 
+        public override byte Order => 2;
+
         protected override string FileURL => __baseUrl + "countryInfo.txt";
+
         protected override ulong FirstRow => 51;
 
         protected override async Task ImportData()

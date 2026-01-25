@@ -1,17 +1,28 @@
+using Menchul.Import.GeoNames.org.Tools.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace Menchul.Import.GeoNames.org
+namespace Menchul.Import.GeoNames.org.Tools
 {
-    internal static class FileTools
+    internal class FileTools : IFileTools
     {
-        public static string CreateTempFolder(ImporterParameters importerParameters)
+        private readonly ILogger<FileTools> __logger;
+        private readonly ImporterParameters __importerParameters;
+
+        public FileTools(ILogger<FileTools> logger, ImporterParameters importerParameters)
+        {
+            __importerParameters = importerParameters;
+            __logger = logger;
+        }
+
+        public string CreateTempFolder()
         {
             string tempFolderName;
 
-            if (string.IsNullOrWhiteSpace(importerParameters.TempFolder))
+            if (string.IsNullOrWhiteSpace(__importerParameters.TempFolder))
             {
                 //var tmp = Environment.GetEnvironmentVariable("TEMP");
                 //var tmp = Environment.GetFolderPath(Environment.SpecialFolder.Templates);
@@ -19,13 +30,14 @@ namespace Menchul.Import.GeoNames.org
                 string tmp = Path.GetTempPath();
 
                 tempFolderName = Path.Combine(tmp, "GeoNames.org");
+                __importerParameters.TempFolder = tempFolderName;
             }
             else
             {
-                tempFolderName = importerParameters.TempFolder;
+                tempFolderName = __importerParameters.TempFolder;
             }
 
-            if (!importerParameters.KeepTempFiles && Directory.Exists(tempFolderName))
+            if (!__importerParameters.KeepTempFiles && Directory.Exists(tempFolderName))
             {
                 Directory.Delete(tempFolderName, true);
             }
@@ -41,7 +53,7 @@ namespace Menchul.Import.GeoNames.org
                 }
             }
 
-            Console.WriteLine("Temp folder is: " + tempFolderName);
+            __logger.LogDebug("Temp folder is: " + tempFolderName);
 
             return tempFolderName;
         }

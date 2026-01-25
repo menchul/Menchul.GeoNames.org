@@ -2,15 +2,16 @@ using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.MSSQL;
 using Menchul.GeoNames.org.PostgreSQL;
 using Menchul.Import.GeoNames.org.Importers;
-using Microsoft.Extensions.Logging;
+using Menchul.Import.GeoNames.org.Importers.Base;
+using Menchul.Import.GeoNames.org.Tools;
+using Menchul.Import.GeoNames.org.Tools.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using NLog.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Menchul.Import.GeoNames.org
 {
@@ -28,6 +29,7 @@ namespace Menchul.Import.GeoNames.org
             if (!args.Any())
             {
                 CommandLineTools.ShowHelp();
+
                 return;
             }
 
@@ -44,41 +46,37 @@ namespace Menchul.Import.GeoNames.org
                     __dbContext = postgreDbContextFactory.CreateDbContext();
                     break;
                 default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    throw new NotImplementedException($"Please implement logic for the server \"{importerParameters.Server}\"");
+                    string message = $"Please implement logic for the server \"{importerParameters.Server}\"";
+
+                    CommandLineTools.WriteError(message);
+
+                    throw new NotImplementedException(message);
             }
 
             await __dbContext.Database.EnsureCreatedAsync();
 
-            try
+            IServiceCollection services = new ServiceCollection();
+            services.AddSingleton(importerParameters);
+            services.AddLogging(builder => builder.AddNLog());
+            services.AddScoped<GeoNamesOrgDbContext>(_ => __dbContext);
+            services.AddScoped<IFileTools, FileTools>();
+            services.AddScoped<BaseImporter, ISOLanguagesImporter>();
+            services.AddScoped<BaseImporter, FeatureCodesImporter>();
+            services.AddScoped<BaseImporter, CountriesImporter>();
+            services.AddScoped<BaseImporter, TimeZonesImporter>();
+            services.AddScoped<BaseImporter, GeoNamesImporter>();
+            services.AddScoped<BaseImporter, AlternateNamesV2Importer>();
+
+            await using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            using IServiceScope scope = serviceProvider.CreateScope();
+
+            IFileTools fileTools = serviceProvider.GetService<IFileTools>()!;
+            fileTools.CreateTempFolder();
+
+            BaseImporter[] importers = scope.ServiceProvider.GetServices<BaseImporter>().OrderBy(i => i.Order).ToArray();
+
+            foreach (BaseImporter importer in importers)
             {
-                FileTools.CreateTempFolder(importerParameters);
-            }
-            catch (Exception exception)
-            {
-                CommandLineTools.WriteError(exception.Message);
-
-                return;
-            }
-
-            ILoggerFactory factory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddNLog());
-
-            Type[] importers =
-            [
-                typeof(ISOLanguagesImporter),
-                typeof(FeatureCodesImporter),
-                typeof(CountriesImporter),
-                typeof(TimeZonesImporter),
-                typeof(GeoNamesImporter),
-                typeof(AlternateNamesV2Importer)
-            ];
-
-            foreach (Type importerType in importers)
-            {
-                ILogger logger = factory.CreateLogger(importerType);
-                var objects = new object[] { __dbContext, logger, importerParameters };
-                BaseImporter importer = (BaseImporter)Activator.CreateInstance(importerType, objects)!;
-
                 await importer.DoImport();
             }
 

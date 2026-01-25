@@ -1,4 +1,5 @@
 using Menchul.GeoNames.org;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,10 +10,12 @@ namespace Menchul.Import.GeoNames.org.Importers
 {
     internal sealed class TimeZonesImporter : BaseImporter
     {
-        public TimeZonesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public TimeZonesImporter(GeoNamesOrgDbContext dbContext, ILogger<TimeZonesImporter> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
+
+        public override byte Order => 3;
 
         protected override string FileURL => __baseUrl + "timeZones.txt";
 

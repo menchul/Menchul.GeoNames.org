@@ -10,7 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org.Importers
+namespace Menchul.Import.GeoNames.org.Importers.Base
 {
     internal abstract class BaseImporter
     {
@@ -21,7 +21,7 @@ namespace Menchul.Import.GeoNames.org.Importers
         protected static readonly ProgressBarOptions __progressBarOptions;
 
         protected readonly GeoNamesOrgDbContext __dbContext;
-        protected readonly ILogger __logger;
+        protected readonly ILogger<BaseImporter> __logger;
         protected readonly ImporterParameters __importerParameters;
 
         protected ProgressBar? _pbar;
@@ -49,7 +49,7 @@ namespace Menchul.Import.GeoNames.org.Importers
 
         protected BaseImporter(
             GeoNamesOrgDbContext dbContext,
-            ILogger logger,
+            ILogger<BaseImporter> logger,
             ImporterParameters importerParameters)
         {
             __dbContext = dbContext;
@@ -57,7 +57,10 @@ namespace Menchul.Import.GeoNames.org.Importers
             __importerParameters = importerParameters;
         }
 
+        public abstract byte Order { get; }
+
         protected abstract string FileURL { get; }
+
         protected virtual ulong FirstRow { get; } = 1;
 
         protected string DownloadFileName => Path.GetFileName(FileURL);

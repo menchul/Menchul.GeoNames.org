@@ -1,5 +1,6 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +13,12 @@ namespace Menchul.Import.GeoNames.org.Importers
 {
     internal class ISOLanguagesImporter : BaseImporter
     {
-        public ISOLanguagesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public ISOLanguagesImporter(GeoNamesOrgDbContext dbContext, ILogger<ISOLanguagesImporter> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
+
+        public override byte Order => 0;
 
         protected override string FileURL => __baseUrl + "iso-languagecodes.txt";
 

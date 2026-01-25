@@ -1,6 +1,7 @@
 using EFCore.BulkExtensions;
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -92,10 +93,12 @@ namespace Menchul.Import.GeoNames.org.Importers
             2185032 /* woj.warmińsko - mazurskie */
         };
 
-        public AlternateNamesV2Importer(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public AlternateNamesV2Importer(GeoNamesOrgDbContext dbContext, ILogger<AlternateNamesV2Importer> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
+
+        public override byte Order => 5;
 
         protected override string FileURL => __baseUrl + "alternateNamesV2.zip";
 

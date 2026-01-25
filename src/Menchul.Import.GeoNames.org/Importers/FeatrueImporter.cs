@@ -1,5 +1,6 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Importers.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +15,15 @@ namespace Menchul.Import.GeoNames.org.Importers
     {
         private static readonly List<string> __languages = ["bg", "nb", "nn", "no", "sv"];
 
-        public FeatureCodesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
+        public FeatureCodesImporter(GeoNamesOrgDbContext dbContext, ILogger<FeatureCodesImporter> logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
         {
         }
 
+        public override byte Order => 1;
+
         protected override string FileURL => __baseUrl + "featureCodes_en.txt";
+
         protected override async Task ImportData()
         {
             foreach (string language in __languages)

@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Menchul.GeoNames.org.PostgreSQL
 {
-    public sealed class GeoNamesOrgPostgreSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgDbContext>
+    public sealed class GeoNamesOrgPostgreSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgPostgreSQLDbContext>
     {
         private readonly string? __connectionString;
 
@@ -18,7 +17,7 @@ namespace Menchul.GeoNames.org.PostgreSQL
             __connectionString = connectionString;
         }
 
-        public GeoNamesOrgDbContext CreateDbContext(string[]? args = null)
+        public GeoNamesOrgPostgreSQLDbContext CreateDbContext(string[]? args = null)
         {
             string? connectionString = null;
 
@@ -35,7 +34,8 @@ namespace Menchul.GeoNames.org.PostgreSQL
             {
                 connectionString = __connectionString;
             }
-            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgDbContext>();
+
+            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgPostgreSQLDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
 
             var geoNamesOrgDbContext = new GeoNamesOrgPostgreSQLDbContext(optionsBuilder.Options);

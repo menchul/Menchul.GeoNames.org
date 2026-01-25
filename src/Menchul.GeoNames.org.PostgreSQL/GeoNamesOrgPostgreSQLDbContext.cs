@@ -8,7 +8,7 @@ namespace Menchul.GeoNames.org.PostgreSQL
         {
         }
 
-        public GeoNamesOrgPostgreSQLDbContext(DbContextOptions<GeoNamesOrgDbContext> options)
+        public GeoNamesOrgPostgreSQLDbContext(DbContextOptions<GeoNamesOrgPostgreSQLDbContext> options)
             : base(options)
         {
         }

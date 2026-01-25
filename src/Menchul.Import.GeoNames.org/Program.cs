@@ -59,7 +59,8 @@ namespace Menchul.Import.GeoNames.org
             services.AddSingleton(importerParameters);
             services.AddLogging(builder => builder.AddNLog());
             services.AddScoped<GeoNamesOrgDbContext>(_ => __dbContext);
-            services.AddScoped<IFileTools, FileTools>();
+            services.AddTransient<IFileTools, FileTools>();
+            services.AddTransient<INormalizer, Normalizer>();
             services.AddScoped<BaseImporter, ISOLanguagesImporter>();
             services.AddScoped<BaseImporter, FeatureCodesImporter>();
             services.AddScoped<BaseImporter, CountriesImporter>();
@@ -68,11 +69,11 @@ namespace Menchul.Import.GeoNames.org
             services.AddScoped<BaseImporter, AlternateNamesV2Importer>();
 
             await using ServiceProvider serviceProvider = services.BuildServiceProvider();
-            using IServiceScope scope = serviceProvider.CreateScope();
 
             IFileTools fileTools = serviceProvider.GetService<IFileTools>()!;
             fileTools.CreateTempFolder();
 
+            using IServiceScope scope = serviceProvider.CreateScope();
             BaseImporter[] importers = scope.ServiceProvider.GetServices<BaseImporter>().OrderBy(i => i.Order).ToArray();
 
             foreach (BaseImporter importer in importers)
@@ -82,7 +83,9 @@ namespace Menchul.Import.GeoNames.org
 
             if (importerParameters.NormalizeData)
             {
-                await Normalizer.Normalize(__dbContext);
+                INormalizer normalizer = serviceProvider.GetService<INormalizer>()!;
+
+                await normalizer.Normalize();
             }
 
             ReadKey();

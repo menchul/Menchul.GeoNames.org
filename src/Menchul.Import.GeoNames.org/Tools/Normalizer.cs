@@ -1,16 +1,24 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.Models;
+using Menchul.Import.GeoNames.org.Tools.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org
+namespace Menchul.Import.GeoNames.org.Tools
 {
-    internal static class Normalizer
+    internal class Normalizer : INormalizer
     {
-        public static async Task Normalize(GeoNamesOrgDbContext dbContext)
+        private readonly GeoNamesOrgDbContext __dbContext;
+
+        public Normalizer(GeoNamesOrgDbContext dbContext)
         {
-            await NomalizeUA(dbContext);
+            __dbContext = dbContext;
+        }
+
+        public async Task Normalize()
+        {
+            await NomalizeUA(__dbContext);
         }
 
         private static async Task NomalizeUA(GeoNamesOrgDbContext dbContext)

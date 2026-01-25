@@ -263,13 +263,14 @@ namespace Menchul.Import.GeoNames.org.Importers
 
             geoNamesIds.Clear();
 
-            //await __dbContext.TimeZones.Where(x => x.CountryCode == "RU").ExecuteDeleteAsync();
-
-            string l404 = GeoNamesImporter.__404.ToLower() + (char)115;
+            string l404 = ((char)114 + (char)117 + (char)115).ToString();
 
             await __dbContext.ISOLanguages.Where(x => x.ISO639_3 == l404).ExecuteDeleteAsync();
 
-            await __dbContext.Countries.Where(x => x.ContinentISO2 == GeoNamesImporter.__404).ExecuteDeleteAsync();
+            foreach (string countryCode in GeoNamesImporter.__nonExistingCountries)
+            {
+                await __dbContext.Countries.Where(x => x.ContinentISO2 == countryCode).ExecuteDeleteAsync();
+            }
 
             await __dbContext.SaveChangesAsync();
 

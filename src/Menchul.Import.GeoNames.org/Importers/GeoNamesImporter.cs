@@ -7,17 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Menchul.Import.GeoNames.org.Importers
 {
     internal class GeoNamesImporter : BaseImporter
     {
-        public static readonly string __404 = ((char)82 + (char)85).ToString();
         private const uint __magicNumber = 100_000;
-        private static readonly char[] __featureClassesAllowed = ['A', 'P'];
-        private static readonly string[] __featureCodesDisabled = ["ADM1H", "ADM2H", "ADM3H", "ADM4H", "ADM5H", "ADMDH", "HSTS", "PCLH", "PPLCH", "PPLH", "RGNH"];
+        private static readonly HashSet<char> __featureClassesAllowed = ['A', 'P'];
+        private static readonly HashSet<string> __featureCodesDisabled = ["ADM1H", "ADM2H", "ADM3H", "ADM4H", "ADM5H", "ADMDH", "HSTS", "PCLH", "PPLCH", "PPLH", "RGNH"];
+        internal static readonly HashSet<string> __nonExistingCountries = ["YU", ((char)82 + (char)85).ToString()];
 
         public GeoNamesImporter(GeoNamesOrgDbContext dbContext, ILogger logger, ImporterParameters importerParameters)
             : base(dbContext, logger, importerParameters)
@@ -43,11 +42,10 @@ namespace Menchul.Import.GeoNames.org.Importers
 
             var swLocal = new Stopwatch();
             swLocal.Start();
+            var geonames = new List<GeoName>();
 
             await using (FileStream file = File.OpenRead(fileName))
             {
-                var geonames = new List<GeoName>();
-
                 using (var reader = new StreamReader(file, __encoding))
                 {
                     __logger.LogTrace("Analyzing file...");
@@ -76,9 +74,18 @@ namespace Menchul.Import.GeoNames.org.Importers
 
                             if (x == 0)
                             {
-                                await __dbContext.BulkInsertAsync(geonames);
 
-                                geonames.Clear();
+                                try
+                                {
+                                    await __dbContext.BulkInsertAsync(geonames);
+
+                                    geonames.Clear();
+                                }
+                                catch (Exception exception)
+                                {
+                                    throw;
+                                }
+
 
                                 decimal seconds = swLocal.ElapsedMilliseconds / 1000m;
                                 seconds = seconds == 0 ? 1 : seconds;
@@ -103,7 +110,7 @@ namespace Menchul.Import.GeoNames.org.Importers
                             {
                                 string? countryCode = GetNullIfEmpty(values[8]);
 
-                                if (countryCode == __404)
+                                if (!string.IsNullOrWhiteSpace(countryCode) && __nonExistingCountries.Contains(countryCode))
                                 {
                                     continue;
                                 }
@@ -187,22 +194,36 @@ namespace Menchul.Import.GeoNames.org.Importers
                             }
                         }
 
-                        await __dbContext.BulkInsertAsync(geonames);
-
-                        geonames.Clear();
-
                         _pbar.Tick(100, $"{i:### ### ###} records of {totalRecords:### ### ###} total records.");
                     }
                 }
             }
 
-            __logger.LogTrace("START DB saving...");
-            swLocal.Restart();
+            try
+            {
+                __logger.LogTrace("Adding records to DBSet...");
+                swLocal.Restart();
 
-            await __dbContext.SaveChangesAsync();
+                await __dbContext.BulkInsertAsync(geonames);
 
-            __logger.LogTrace($"END DB saving in {swLocal.Elapsed:hh\\:mm\\:ss}");
-            swLocal.Stop();
+                __logger.LogTrace($"Adding records to DBSet took {swLocal.Elapsed}");
+
+                geonames.Clear();
+
+                __logger.LogTrace("START DB saving...");
+                swLocal.Restart();
+
+                await __dbContext.SaveChangesAsync();
+
+                __logger.LogTrace($"END DB saving in {swLocal.Elapsed:hh\\:mm\\:ss}");
+                swLocal.Stop();
+            }
+            catch (Exception exception)
+            {
+                __logger.LogError(exception, exception.Message);
+
+                throw;
+            }
         }
     }
 }

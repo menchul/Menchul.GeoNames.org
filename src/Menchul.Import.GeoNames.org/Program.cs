@@ -1,5 +1,6 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.MSSQL;
+using Menchul.GeoNames.org.PostgreSQL;
 using Menchul.Import.GeoNames.org.Importers;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -39,7 +40,7 @@ namespace Menchul.Import.GeoNames.org
                     __dbContext = msSQLDbContextFactory.CreateDbContext();
                     break;
                 case Server.PostgreSQL:
-                    var postgreDbContextFactory = new GeoNamesOrgMSSQLDbContextFactory(importerParameters.ConnectionString);
+                    var postgreDbContextFactory = new GeoNamesOrgPostgreSQLDbContextFactory(importerParameters.ConnectionString);
                     __dbContext = postgreDbContextFactory.CreateDbContext();
                     break;
                 default:
@@ -47,21 +48,18 @@ namespace Menchul.Import.GeoNames.org
                     throw new NotImplementedException($"Please implement logic for the server \"{importerParameters.Server}\"");
             }
 
-            if (importerParameters.TempFolder == null)
+            await __dbContext.Database.EnsureCreatedAsync();
+
+            try
             {
-                try
-                {
-                    importerParameters.TempFolder = FileTools.CreateTempFolder();
-                }
-                catch (Exception exception)
-                {
-                    CommandLineTools.WriteError(exception.Message);
-
-                    return;
-                }
+                FileTools.CreateTempFolder(importerParameters);
             }
+            catch (Exception exception)
+            {
+                CommandLineTools.WriteError(exception.Message);
 
-            Directory.CreateDirectory(importerParameters.TempFolder);
+                return;
+            }
 
             ILoggerFactory factory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddNLog());
 

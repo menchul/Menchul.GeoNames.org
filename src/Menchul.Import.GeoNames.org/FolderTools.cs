@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
@@ -8,29 +7,38 @@ namespace Menchul.Import.GeoNames.org
 {
     internal static class FileTools
     {
-        public static string CreateTempFolder()
+        public static string CreateTempFolder(ImporterParameters importerParameters)
         {
-            //var tmp = Environment.GetEnvironmentVariable("TEMP");
-            //var tmp = Environment.GetFolderPath(Environment.SpecialFolder.Templates);
-            //var tmp = Environment.GetFolderPath(Environment.SpecialFolder.CommonTemplates);
-            string tmp = Path.GetTempPath();
+            string tempFolderName;
 
-            string tempFolderName = Path.Combine(tmp, "GeoNames.org");
+            if (string.IsNullOrWhiteSpace(importerParameters.TempFolder))
+            {
+                //var tmp = Environment.GetEnvironmentVariable("TEMP");
+                //var tmp = Environment.GetFolderPath(Environment.SpecialFolder.Templates);
+                //var tmp = Environment.GetFolderPath(Environment.SpecialFolder.CommonTemplates);
+                string tmp = Path.GetTempPath();
 
-            if (Directory.Exists(tempFolderName))
+                tempFolderName = Path.Combine(tmp, "GeoNames.org");
+            }
+            else
+            {
+                tempFolderName = importerParameters.TempFolder;
+            }
+
+            if (!importerParameters.KeepTempFiles && Directory.Exists(tempFolderName))
             {
                 Directory.Delete(tempFolderName, true);
             }
 
-            Directory.CreateDirectory(tempFolderName);
-
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-            if (isWindows)
+            if (!Directory.Exists(tempFolderName))
             {
-#if WINDOWS
-                GrantAccess(tempFolderName);
-#endif
+                Directory.CreateDirectory(tempFolderName);
+                bool isWindows = OperatingSystem.IsWindows();
+
+                if (isWindows)
+                {
+                    GrantAccess(tempFolderName);
+                }
             }
 
             Console.WriteLine("Temp folder is: " + tempFolderName);
@@ -38,7 +46,7 @@ namespace Menchul.Import.GeoNames.org
             return tempFolderName;
         }
 
-#if WINDOWS
+#pragma warning disable CA1416
         private static void GrantAccess(string fullPath)
         {
             var directoryInfo = new DirectoryInfo(fullPath);
@@ -49,6 +57,6 @@ namespace Menchul.Import.GeoNames.org
             dSecurity.AddAccessRule(rule);
             directoryInfo.SetAccessControl(dSecurity);
         }
-#endif
+#pragma warning restore CA1416
     }
 }

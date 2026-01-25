@@ -106,6 +106,9 @@ namespace Menchul.Import.GeoNames.org
                     case "--normalizeData":
                         importParameters.NormalizeData = true;
                         break;
+                    case "--keepTempFiles":
+                        importParameters.KeepTempFiles = true;
+                        break;
                 }
             }
 

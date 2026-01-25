@@ -11,5 +11,7 @@ namespace Menchul.Import.GeoNames.org
         public bool ImportOnlyAP { get; set; }
 
         public bool NormalizeData { get; set; }
+
+        public bool KeepTempFiles { get; set; }
     }
 }

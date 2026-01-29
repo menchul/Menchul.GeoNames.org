@@ -125,7 +125,7 @@ namespace Menchul.GeoNames.org.PostgreSQL.Migrations
                     Name = table.Column<string>(type: "character varying(30)", unicode: false, maxLength: 30, nullable: false),
                     CountryCode = table.Column<string>(type: "character(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
                     GMTOffset = table.Column<decimal>(type: "numeric(4,2)", precision: 4, scale: 2, nullable: false),
-                    DSTOffset = table.Column<decimal>(type: "numeric(4,2)", precision: 4, scale: 2, nullable: false),
+                    DSTOffset = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
                     RawOffset = table.Column<decimal>(type: "numeric(4,2)", precision: 4, scale: 2, nullable: false)
                 },
                 constraints: table =>
@@ -185,11 +185,7 @@ namespace Menchul.GeoNames.org.PostgreSQL.Migrations
                     Elevation = table.Column<int>(type: "integer", nullable: true),
                     DEM = table.Column<int>(type: "integer", nullable: false),
                     TimeZoneName = table.Column<string>(type: "character varying(30)", unicode: false, maxLength: 30, nullable: true),
-#if NET5_0
-                    ModificationDate = table.Column<DateTime>(type: "date", nullable: false)
-#else
                     ModificationDate = table.Column<DateOnly>(type: "date", nullable: false)
-#endif
                 },
                 constraints: table =>
                 {

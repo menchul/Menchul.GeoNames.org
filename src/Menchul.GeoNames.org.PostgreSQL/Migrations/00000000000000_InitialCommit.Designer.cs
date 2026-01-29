@@ -472,13 +472,8 @@ namespace Menchul.GeoNames.org.PostgreSQL.Migrations
                         .HasPrecision(8, 5)
                         .HasColumnType("double precision");
 
-#if NET5_0
-                    b.Property<DateTime>("ModificationDate")
-                        .HasColumnType("date");
-#else
                     b.Property<DateOnly>("ModificationDate")
                         .HasColumnType("date");
-#endif
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -557,8 +552,8 @@ namespace Menchul.GeoNames.org.PostgreSQL.Migrations
                         .IsFixedLength();
 
                     b.Property<decimal>("DSTOffset")
-                        .HasPrecision(4, 2)
-                        .HasColumnType("numeric(4,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)");
 
                     b.Property<decimal>("GMTOffset")
                         .HasPrecision(4, 2)

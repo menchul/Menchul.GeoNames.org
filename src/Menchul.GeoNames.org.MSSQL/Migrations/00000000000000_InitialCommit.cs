@@ -125,7 +125,7 @@ namespace Menchul.GeoNames.org.MSSQL.Migrations
                     Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
                     CountryCode = table.Column<string>(type: "char(2)", unicode: false, fixedLength: true, maxLength: 2, nullable: false),
                     GMTOffset = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
-                    DSTOffset = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
+                    DSTOffset = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     RawOffset = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false)
                 },
                 constraints: table =>
@@ -185,11 +185,7 @@ namespace Menchul.GeoNames.org.MSSQL.Migrations
                     Elevation = table.Column<int>(type: "int", nullable: true),
                     DEM = table.Column<int>(type: "int", nullable: false),
                     TimeZoneName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true),
-#if NET5_0
-                    ModificationDate = table.Column<DateTime>(type: "date", nullable: false)
-#else
                     ModificationDate = table.Column<DateOnly>(type: "date", nullable: false)
-#endif
                 },
                 constraints: table =>
                 {

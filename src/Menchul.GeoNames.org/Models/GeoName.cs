@@ -63,11 +63,9 @@ namespace Menchul.GeoNames.org.Models
         public TimeZone? TimeZone { get; set; }
 
         /// <summary> Date of last modification in yyyy-MM-dd format </summary>
-#if NET5_0
-        public DateTime ModificationDate { get; set; }
-#else
+
         public DateOnly ModificationDate { get; set; }
-#endif
+
 
 
 

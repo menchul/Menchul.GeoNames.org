@@ -17,7 +17,7 @@ namespace Menchul.GeoNames.org.ModelConfigs
             builder.Property(x => x.CountryCode).IsRequired().HasMaxLength(2).IsFixedLength().IsUnicode(false);
 
             builder.Property(x => x.GMTOffset).IsRequired().HasPrecision(4, 2);
-            builder.Property(x => x.DSTOffset).IsRequired().HasPrecision(4, 2);
+            builder.Property(x => x.DSTOffset).IsRequired().HasPrecision(10, 2);
             builder.Property(x => x.RawOffset).IsRequired().HasPrecision(4, 2);
 
 

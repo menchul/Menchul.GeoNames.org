@@ -17,11 +17,11 @@
     </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.23">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.22" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.23" />
     </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">

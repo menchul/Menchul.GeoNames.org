@@ -17,6 +17,7 @@
 
     <ItemGroup>
         <PackageReference Include="EFCore.BulkExtensions.PostgreSql" Version="10.0.0" />
+        <PackageReference Include="EFCore.BulkExtensions.SQLite" Version="10.0.0" />
         <PackageReference Include="EFCore.BulkExtensions.SqlServer" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
         <PackageReference Include="NLog" Version="6.0.7" />
@@ -28,6 +29,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj" />
       <ProjectReference Include="..\Menchul.GeoNames.org.PostgreSQL\Menchul.GeoNames.org.PostgreSQL.csproj" />
+      <ProjectReference Include="..\Menchul.GeoNames.org.SQLite\Menchul.GeoNames.org.SQLite.csproj" />
     </ItemGroup>
 
     <ItemGroup>

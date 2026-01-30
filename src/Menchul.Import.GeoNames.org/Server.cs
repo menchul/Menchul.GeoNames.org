@@ -6,6 +6,8 @@ namespace Menchul.Import.GeoNames.org
 
         MSSQL,
 
-        PostgreSQL
+        PostgreSQL,
+
+        SQLite
     }
 }

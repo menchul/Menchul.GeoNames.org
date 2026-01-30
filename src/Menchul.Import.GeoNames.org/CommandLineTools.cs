@@ -51,6 +51,13 @@ namespace Menchul.Import.GeoNames.org
                             continue;
                         }
 
+                        if (string.Equals("SQLite", srv, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            importParameters.Server = Server.SQLite;
+
+                            continue;
+                        }
+
                         break;
                     case "--connectionString":
                     case "--connection":

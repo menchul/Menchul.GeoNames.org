@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.GeoNames.org.MSSQL"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.Import.GeoNames.org", "Menchul.Import.GeoNames.org\Menchul.Import.GeoNames.org.csproj", "{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menchul.GeoNames.org.SQLite", "Menchul.GeoNames.org.SQLite\Menchul.GeoNames.org.SQLite.csproj", "{92234C37-23D1-4A61-9BAB-97B87B47FA2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92234C37-23D1-4A61-9BAB-97B87B47FA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92234C37-23D1-4A61-9BAB-97B87B47FA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92234C37-23D1-4A61-9BAB-97B87B47FA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92234C37-23D1-4A61-9BAB-97B87B47FA2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

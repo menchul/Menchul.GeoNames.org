@@ -1,6 +1,7 @@
 using Menchul.GeoNames.org;
 using Menchul.GeoNames.org.MSSQL;
 using Menchul.GeoNames.org.PostgreSQL;
+using Menchul.GeoNames.org.SQLite;
 using Menchul.Import.GeoNames.org.Importers;
 using Menchul.Import.GeoNames.org.Importers.Base;
 using Menchul.Import.GeoNames.org.Tools;
@@ -44,6 +45,10 @@ namespace Menchul.Import.GeoNames.org
                 case Server.PostgreSQL:
                     var postgreDbContextFactory = new GeoNamesOrgPostgreSQLDbContextFactory(importerParameters.ConnectionString);
                     __dbContext = postgreDbContextFactory.CreateDbContext();
+                    break;
+                case Server.SQLite:
+                    var sqLiteDbContextFactory = new GeoNamesOrgSQLiteDbContextFactory(importerParameters.ConnectionString);
+                    __dbContext = sqLiteDbContextFactory.CreateDbContext();
                     break;
                 default:
                     string message = $"Please implement logic for the server \"{importerParameters.Server}\"";

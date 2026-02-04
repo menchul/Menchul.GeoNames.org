@@ -36,26 +36,20 @@ namespace Menchul.Import.GeoNames.org
 
                         string srv = args[i].Trim();
 
-                        if (string.Equals("MSSQL", srv, StringComparison.InvariantCultureIgnoreCase))
+                        if (!Enum.TryParse(srv, true, out Server serverType))
                         {
-                            importParameters.Server = Server.MSSQL;
+                            string message = $"DB server \"{srv}\" is not recognized";
 
-                            continue;
+                            throw new ArgumentOutOfRangeException("--server", message);
                         }
 
-                        if (string.Equals("PostgreSQL", srv, StringComparison.InvariantCultureIgnoreCase))
+                        importParameters.Server = serverType;
+
+                        switch (serverType)
                         {
-                            importParameters.Server = Server.PostgreSQL;
-                            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-                            continue;
-                        }
-
-                        if (string.Equals("SQLite", srv, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            importParameters.Server = Server.SQLite;
-
-                            continue;
+                            case Server.PostgreSQL:
+                                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+                                break;
                         }
 
                         break;

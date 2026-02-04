@@ -27,9 +27,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj" />
-      <ProjectReference Include="..\Menchul.GeoNames.org.PostgreSQL\Menchul.GeoNames.org.PostgreSQL.csproj" />
-      <ProjectReference Include="..\Menchul.GeoNames.org.SQLite\Menchul.GeoNames.org.SQLite.csproj" />
+        <ProjectReference Include="..\Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj" />
+        <ProjectReference Include="..\Menchul.GeoNames.org.PostgreSQL\Menchul.GeoNames.org.PostgreSQL.csproj" />
+        <ProjectReference Include="..\Menchul.GeoNames.org.SQLite\Menchul.GeoNames.org.SQLite.csproj" />
     </ItemGroup>
 
     <ItemGroup>

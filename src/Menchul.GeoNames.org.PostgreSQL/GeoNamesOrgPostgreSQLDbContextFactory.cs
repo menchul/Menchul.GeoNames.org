@@ -36,7 +36,7 @@ namespace Menchul.GeoNames.org.PostgreSQL
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgPostgreSQLDbContext>();
-            optionsBuilder.UseNpgsql(connectionString);
+            optionsBuilder.UseNpgsql(connectionString!);
 
             var geoNamesOrgDbContext = new GeoNamesOrgPostgreSQLDbContext(optionsBuilder.Options);
 

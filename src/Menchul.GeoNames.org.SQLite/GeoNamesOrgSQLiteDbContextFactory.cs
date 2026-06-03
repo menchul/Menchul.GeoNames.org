@@ -36,7 +36,7 @@ namespace Menchul.GeoNames.org.SQLite
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgSQLiteDbContext>();
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder.UseSqlite(connectionString!);
 
             var geoNamesOrgDbContext = new GeoNamesOrgSQLiteDbContext(optionsBuilder.Options);
 

@@ -36,7 +36,7 @@ namespace Menchul.GeoNames.org.MSSQL
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgMSSQLDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionString!);
 
             var geoNamesOrgDbContext = new GeoNamesOrgMSSQLDbContext(optionsBuilder.Options);
 

@@ -78,16 +78,9 @@ namespace Menchul.Import.GeoNames.org.Importers
                             if (x == 0)
                             {
 
-                                try
-                                {
-                                    await __dbContext.BulkInsertAsync(geonames);
+                                await __dbContext.BulkInsertAsync(geonames);
 
-                                    geonames.Clear();
-                                }
-                                catch (Exception exception)
-                                {
-                                    throw;
-                                }
+                                geonames.Clear();
 
 
                                 decimal seconds = swLocal.ElapsedMilliseconds / 1000m;

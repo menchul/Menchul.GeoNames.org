@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+    <Import Project="Menchul.GeoNames.org.props" />
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net8.0;net10.0</TargetFrameworks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageIcon>Menchul.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)'=='Release'">
+        <None Include="..\..\Menchul.png" Pack="True" PackagePath="\" />
+    </ItemGroup>
+
+</Project>

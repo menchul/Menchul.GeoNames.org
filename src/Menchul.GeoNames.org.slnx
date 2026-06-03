@@ -1,0 +1,36 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="../.gitignore" />
+    <File Path="../LICENSE" />
+    <File Path="../README.md" />
+  </Folder>
+  <Folder Name="/props/">
+    <File Path="props/Menchul.GeoNames.org.pckg.props" />
+    <File Path="props/Menchul.GeoNames.org.props" />
+  </Folder>
+  <Folder Name="/targets/">
+    <File Path="targets/EFCore.BulkExtensions.PostgreSql.targets" />
+    <File Path="targets/EFCore.BulkExtensions.SQLite.targets" />
+    <File Path="targets/EFCore.BulkExtensions.SqlServer.targets" />
+    <File Path="targets/FirebirdSql.EntityFrameworkCore.Firebird.targets" />
+    <File Path="targets/Microsoft.EntityFrameworkCore.Design.targets" />
+    <File Path="targets/Microsoft.EntityFrameworkCore.Relational.targets" />
+    <File Path="targets/Microsoft.EntityFrameworkCore.Sqlite.Core.targets" />
+    <File Path="targets/Microsoft.EntityFrameworkCore.SqlServer.targets" />
+    <File Path="targets/Microsoft.Extensions.Configuration.CommandLine.targets" />
+    <File Path="targets/Microsoft.Extensions.Logging.targets" />
+    <File Path="targets/MySql.EntityFrameworkCore.targets" />
+    <File Path="targets/NLog.Extensions.Logging.targets" />
+    <File Path="targets/NLog.Schema.targets" />
+    <File Path="targets/NLog.targets" />
+    <File Path="targets/Npgsql.EntityFrameworkCore.PostgreSQL.targets" />
+    <File Path="targets/SQLitePCLRaw.bundle_e_sqlite3.targets" />
+    <File Path="targets/ShellProgressBar.targets" />
+  </Folder>
+  <Project Path="Menchul.GeoNames.org.MSSQL/Menchul.GeoNames.org.MSSQL.csproj" />
+  <Project Path="Menchul.GeoNames.org.PostgreSQL/Menchul.GeoNames.org.PostgreSQL.csproj" />
+  <Project Path="Menchul.GeoNames.org.SQLite/Menchul.GeoNames.org.SQLite.csproj" />
+  <Project Path="Menchul.GeoNames.org/Menchul.GeoNames.org.csproj" />
+  <Project Path="Menchul.Import.GeoNames.org/Menchul.Import.GeoNames.org.csproj" />
+</Solution>

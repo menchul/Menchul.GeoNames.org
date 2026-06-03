@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="..\Menchul.GeoNames.org.props" />
+    <Import Project="..\props\Menchul.GeoNames.org.props" />
 
     <PropertyGroup>
         <ProjectGuid>{2D99947A-7A1E-4462-AD9F-95BD03FCA13D}</ProjectGuid>
@@ -15,16 +15,14 @@
         <NoWarn>$(NoWarn);SYSLIB0014</NoWarn>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="EFCore.BulkExtensions.PostgreSql" Version="10.0.0" />
-        <PackageReference Include="EFCore.BulkExtensions.SQLite" Version="10.0.0" />
-        <PackageReference Include="EFCore.BulkExtensions.SqlServer" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
-        <PackageReference Include="NLog" Version="6.0.7" />
-        <PackageReference Include="NLog.Extensions.Logging" Version="6.1.0" />
-        <PackageReference Include="NLog.Schema" Version="6.0.7" />
-        <PackageReference Include="ShellProgressBar" Version="5.2.0" />
-    </ItemGroup>
+    <Import Project="..\targets\EFCore.BulkExtensions.PostgreSql.targets" />
+    <Import Project="..\targets\EFCore.BulkExtensions.SQLite.targets" />
+    <Import Project="..\targets\EFCore.BulkExtensions.SqlServer.targets" />
+    <Import Project="..\targets\Microsoft.Extensions.Logging.targets" />
+    <Import Project="..\targets\NLog.targets" />
+    <Import Project="..\targets\NLog.Extensions.Logging.targets" />
+    <Import Project="..\targets\NLog.Schema.targets" />
+    <Import Project="..\targets\ShellProgressBar.targets" />
 
     <ItemGroup>
         <ProjectReference Include="..\Menchul.GeoNames.org.MSSQL\Menchul.GeoNames.org.MSSQL.csproj" />

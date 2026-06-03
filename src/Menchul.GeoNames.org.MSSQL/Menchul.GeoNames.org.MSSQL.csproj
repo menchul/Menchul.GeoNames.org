@@ -1,36 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="..\Menchul.GeoNames.org.pckg.props" />
+    <Import Project="..\props\Menchul.GeoNames.org.pckg.props" />
 
-    <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.36">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.36" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.23">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
-    </ItemGroup>
+    <Import Project="..\targets\Microsoft.EntityFrameworkCore.Design.targets" />
+    <Import Project="..\targets\Microsoft.EntityFrameworkCore.SqlServer.targets" />
 
     <ItemGroup>
         <ProjectReference Include="..\Menchul.GeoNames.org\Menchul.GeoNames.org.csproj" />
     </ItemGroup>
 
-    <Import Project="..\Menchul.GeoNames.org.References.CommandLine.targets" />
+    <Import Project="..\targets\Microsoft.Extensions.Configuration.CommandLine.targets" />
 
 </Project>

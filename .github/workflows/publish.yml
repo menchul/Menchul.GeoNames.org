@@ -1,0 +1,49 @@
+name: Publish to NuGet
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Build, Pack & Publish
+    runs-on: windows-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore src/Menchul.GeoNames.org.slnx
+
+      - name: Build & Pack Release
+        run: dotnet build src/Menchul.GeoNames.org.slnx -c Release --no-restore
+
+      - name: NuGet login (OIDC -> Temporary API Key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER || 'Menchul' }}
+
+      - name: Publish NuGet Packages
+        shell: pwsh
+        run: |
+          $packages = Get-ChildItem -Path src -Filter *.nupkg -Recurse
+          foreach ($pkg in $packages) {
+            Write-Host "Publishing $($pkg.FullName)..."
+            dotnet nuget push $pkg.FullName --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }

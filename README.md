@@ -15,7 +15,6 @@ Entity Framework Core library and data import tool for geographical data from th
 * **`Menchul.GeoNames.org.MSSQL`**: EF Core migrations and `DbContext` implementation for Microsoft SQL Server.
 * **`Menchul.GeoNames.org.PostgreSQL`**: EF Core migrations and `DbContext` implementation for PostgreSQL (Npgsql).
 * **`Menchul.GeoNames.org.SQLite`**: EF Core migrations and `DbContext` implementation for SQLite.
-* **`Menchul.GeoNames.org.Firebird`**: EF Core migrations and `DbContext` implementation for Firebird SQL.
 
 ### Import Utility
 * **`Menchul.Import.GeoNames.org`**: CLI application (`net10.0`) that automatically downloads dump files from GeoNames, extracts and parses them, and bulk-imports data into the target database.

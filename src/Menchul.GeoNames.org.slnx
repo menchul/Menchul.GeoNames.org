@@ -13,7 +13,6 @@
     <File Path="targets/EFCore.BulkExtensions.PostgreSql.targets" />
     <File Path="targets/EFCore.BulkExtensions.SQLite.targets" />
     <File Path="targets/EFCore.BulkExtensions.SqlServer.targets" />
-    <File Path="targets/FirebirdSql.EntityFrameworkCore.Firebird.targets" />
     <File Path="targets/Microsoft.EntityFrameworkCore.Design.targets" />
     <File Path="targets/Microsoft.EntityFrameworkCore.Relational.targets" />
     <File Path="targets/Microsoft.EntityFrameworkCore.Sqlite.Core.targets" />
@@ -28,7 +27,6 @@
     <File Path="targets/SQLitePCLRaw.bundle_e_sqlite3.targets" />
     <File Path="targets/ShellProgressBar.targets" />
   </Folder>
-  <Project Path="Menchul.GeoNames.org.Firebird/Menchul.GeoNames.org.Firebird.csproj" />
   <Project Path="Menchul.GeoNames.org.MSSQL/Menchul.GeoNames.org.MSSQL.csproj" />
   <Project Path="Menchul.GeoNames.org.PostgreSQL/Menchul.GeoNames.org.PostgreSQL.csproj" />
   <Project Path="Menchul.GeoNames.org.SQLite/Menchul.GeoNames.org.SQLite.csproj" />

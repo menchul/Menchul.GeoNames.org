@@ -1,8 +1,7 @@
-namespace Menchul.GeoNames.org.Models.Base
+namespace Menchul.GeoNames.org.Models.Base;
+
+public abstract class BaseGeoNameIdEntity
 {
-    public abstract class BaseGeoNameIdEntity
-    {
-        /// <summary> Integer id of record in geonames database </summary>
-        public uint GeoNameId { get; set; }
-    }
+    /// <summary> Integer id of record in geonames database </summary>
+    public uint GeoNameId { get; set; }
 }

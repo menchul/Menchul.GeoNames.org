@@ -32,4 +32,5 @@
   <Project Path="Menchul.GeoNames.org.SQLite/Menchul.GeoNames.org.SQLite.csproj" />
   <Project Path="Menchul.GeoNames.org/Menchul.GeoNames.org.csproj" />
   <Project Path="Menchul.Import.GeoNames.org/Menchul.Import.GeoNames.org.csproj" />
+  <Project Path="Menchul.Import.GeoNames.org.IntegrationTests/Menchul.Import.GeoNames.org.IntegrationTests.csproj" />
 </Solution>

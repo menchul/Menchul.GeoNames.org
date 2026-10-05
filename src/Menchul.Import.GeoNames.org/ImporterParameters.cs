@@ -1,17 +1,16 @@
-namespace Menchul.Import.GeoNames.org
+namespace Menchul.Import.GeoNames.org;
+
+internal record ImporterParameters
 {
-    internal record ImporterParameters
-    {
-        public string? TempFolder { get; set; }
+    public string? TempFolder { get; set; }
 
-        public Server? Server { get; set; }
+    public Server? Server { get; set; }
 
-        public string? ConnectionString { get; set; }
+    public string? ConnectionString { get; set; }
 
-        public bool ImportOnlyAP { get; set; }
+    public bool ImportOnlyAP { get; set; }
 
-        public bool NormalizeData { get; set; }
+    public bool NormalizeData { get; set; }
 
-        public bool KeepTempFiles { get; set; }
-    }
+    public bool KeepTempFiles { get; set; }
 }

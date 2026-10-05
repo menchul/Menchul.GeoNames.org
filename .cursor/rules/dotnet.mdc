@@ -1,0 +1,24 @@
+---
+description: C# Rules
+globs: **/*.cs
+alwaysApply: true
+---
+- Build the project and check for errors; if they exist, fix them and rebuild. Continue until the build succeeds. If there are more than 5 failed build attempts, stop, describe the problem, and ask for my help.
+- BEFORE writing or editing any C# / csproj / props / targets code: re-read and apply `General Technological and Non-Functional Requirements.txt`, root `.editorconfig`, and this file. Do not invent formatting habits that contradict them.
+- Calculations in `return` statements are forbidden. Instead of `return a + b;`, use `int result = a + b; return result;`.
+- Use `var` if the variable type is explicit. Instead of `var result = a + b;`, use `int result = a + b;`.
+- Only variables/constants can be passed as method parameters. Constants include: numeric/string literals, `const` fields, enum members (e.g. `UriPartial.Path`), and well-known static constants (e.g. `StringComparer.OrdinalIgnoreCase`, `CrawlResourceType.PDF`). Do NOT create a local variable whose only purpose is to hold such a constant before passing it.
+- `using` directives (not `using` for IDisposable) may appear only before `namespace`.
+- No characters are allowed after the final `}` in a file.
+- Do not create private classes. If a separate class is needed, create it as `internal`.
+- Do not add comments to the code.
+- Do not delete comments of the `/**/` type.
+- Rule: 1 file - 1 class/record/interface/enum/struct
+- class/record/interface/enum/struct must have minimal posssible visibility.
+- All classes/records that are not DTO must be sealed.
+- Razor pages C# code should be stored in a separate CS file. For example if Blazor page name is `MainLayout.razor` C# code should be in file `MainLayout.razor.cs`. Never mix different languages in 1 file.
+- Same for RAZOR/HTML pages: if you need CSS or JS - put it in a separate file.
+- Do not use public anonymous/tuple input/output parameters for methods.
+- Do NOT use `<ImplicitUsings>enable</ImplicitUsings>` in csproj; set `<ImplicitUsings>disable</ImplicitUsings>` and add explicit `using` directives before `namespace`.
+- Never wrap method/constructor parameters or call arguments onto new lines. All parameters/arguments MUST stay on the same line as the opening `(`.
+- Do not break statements across lines (especially string building). Prefer a single-line interpolated string `$"...{x}..."` instead of multi-line `"..." + x + "..."`. If a statement becomes huge, simplify the design instead of wrapping.

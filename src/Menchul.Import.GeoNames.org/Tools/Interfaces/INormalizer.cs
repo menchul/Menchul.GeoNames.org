@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org.Tools.Interfaces
+namespace Menchul.Import.GeoNames.org.Tools.Interfaces;
+
+internal interface INormalizer
 {
-    internal interface INormalizer
-    {
-        Task Normalize();
-    }
+    Task Normalize();
 }

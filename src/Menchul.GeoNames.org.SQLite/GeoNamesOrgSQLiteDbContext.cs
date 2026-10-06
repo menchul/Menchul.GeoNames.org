@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Menchul.GeoNames.org.SQLite
-{
-    public class GeoNamesOrgSQLiteDbContext : GeoNamesOrgDbContext
-    {
-        public GeoNamesOrgSQLiteDbContext()
-        {
-        }
+namespace Menchul.GeoNames.org.SQLite;
 
-        public GeoNamesOrgSQLiteDbContext(DbContextOptions<GeoNamesOrgSQLiteDbContext> options)
-            : base(options)
-        {
-        }
+public class GeoNamesOrgSQLiteDbContext : GeoNamesOrgDbContext
+{
+    public GeoNamesOrgSQLiteDbContext()
+    {
+    }
+
+    public GeoNamesOrgSQLiteDbContext(DbContextOptions<GeoNamesOrgSQLiteDbContext> options)
+        : base(options)
+    {
     }
 }

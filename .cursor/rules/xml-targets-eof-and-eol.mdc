@@ -1,0 +1,14 @@
+---
+description: Enforce CRLF and strict EOF for .targets/.xml files
+globs: "{**/*.xml,**/*.csproj,**/*.targets,**/*.props}"
+alwaysApply: false
+---
+
+# XML-like files: line endings and end-of-file
+
+- Respect `.editorconfig` for `end_of_line`
+- Do **not** add a trailing newline when `insert_final_newline = false`.
+- For MSBuild XML files (especially `*.targets`), ensure **nothing exists after the final closing tag**:
+  - After `</Project>` there must be **zero** characters (no spaces, no tabs, no CR/LF).
+  - The **last byte** in the file must be `>` (files {**/*.csproj,**/*.targets,**/*.props} must end exactly with `</Project>`).
+

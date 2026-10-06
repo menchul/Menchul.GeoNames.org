@@ -1,7 +1,6 @@
-namespace Menchul.Import.GeoNames.org.Tools.Interfaces
+namespace Menchul.Import.GeoNames.org.Tools.Interfaces;
+
+internal interface IFileTools
 {
-    internal interface IFileTools
-    {
-        string CreateTempFolder();
-    }
+    string CreateTempFolder();
 }

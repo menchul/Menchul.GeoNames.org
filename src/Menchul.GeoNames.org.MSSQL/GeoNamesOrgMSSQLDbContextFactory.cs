@@ -2,45 +2,44 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Menchul.GeoNames.org.MSSQL
+namespace Menchul.GeoNames.org.MSSQL;
+
+public class GeoNamesOrgMSSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgMSSQLDbContext>
 {
-    public class GeoNamesOrgMSSQLDbContextFactory : IDesignTimeDbContextFactory<GeoNamesOrgMSSQLDbContext>
+    private readonly string? __connectionString;
+
+    public GeoNamesOrgMSSQLDbContextFactory()
     {
-        private readonly string? __connectionString;
+    }
 
-        public GeoNamesOrgMSSQLDbContextFactory()
+    public GeoNamesOrgMSSQLDbContextFactory(string? connectionString)
+    {
+        __connectionString = connectionString;
+    }
+
+    public GeoNamesOrgMSSQLDbContext CreateDbContext(string[]? args = null)
+    {
+        string? connectionString = null;
+
+        if (args != null && args.Length > 0)
         {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddCommandLine(args)
+                .Build();
+
+            connectionString = configuration["connection"];
         }
 
-        public GeoNamesOrgMSSQLDbContextFactory(string? connectionString)
+        if (string.IsNullOrWhiteSpace(connectionString))
         {
-            __connectionString = connectionString;
+            connectionString = __connectionString;
         }
 
-        public GeoNamesOrgMSSQLDbContext CreateDbContext(string[]? args = null)
-        {
-            string? connectionString = null;
+        var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgMSSQLDbContext>();
+        optionsBuilder.UseSqlServer(connectionString!);
 
-            if (args != null && args.Length > 0)
-            {
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .AddCommandLine(args)
-                    .Build();
+        var geoNamesOrgDbContext = new GeoNamesOrgMSSQLDbContext(optionsBuilder.Options);
 
-                connectionString = configuration["connection"];
-            }
-
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = __connectionString;
-            }
-
-            var optionsBuilder = new DbContextOptionsBuilder<GeoNamesOrgMSSQLDbContext>();
-            optionsBuilder.UseSqlServer(connectionString!);
-
-            var geoNamesOrgDbContext = new GeoNamesOrgMSSQLDbContext(optionsBuilder.Options);
-
-            return geoNamesOrgDbContext;
-        }
+        return geoNamesOrgDbContext;
     }
 }

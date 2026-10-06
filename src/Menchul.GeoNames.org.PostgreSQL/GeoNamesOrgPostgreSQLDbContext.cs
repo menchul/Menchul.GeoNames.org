@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Menchul.GeoNames.org.PostgreSQL
-{
-    public class GeoNamesOrgPostgreSQLDbContext : GeoNamesOrgDbContext
-    {
-        public GeoNamesOrgPostgreSQLDbContext()
-        {
-        }
+namespace Menchul.GeoNames.org.PostgreSQL;
 
-        public GeoNamesOrgPostgreSQLDbContext(DbContextOptions<GeoNamesOrgPostgreSQLDbContext> options)
-            : base(options)
-        {
-        }
+public class GeoNamesOrgPostgreSQLDbContext : GeoNamesOrgDbContext
+{
+    public GeoNamesOrgPostgreSQLDbContext()
+    {
+    }
+
+    public GeoNamesOrgPostgreSQLDbContext(DbContextOptions<GeoNamesOrgPostgreSQLDbContext> options)
+        : base(options)
+    {
     }
 }

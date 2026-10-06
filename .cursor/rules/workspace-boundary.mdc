@@ -1,0 +1,12 @@
+---
+description: Mandatory main repository boundary and local temporary files
+alwaysApply: true
+---
+
+# Mandatory workspace boundary
+
+- NEVER create, edit, or develop project code outside the user's main working repository directory.
+- Keep all implementation changes and Git branches in that main working directory. Do not create external Git worktrees, sibling checkouts, or external development copies.
+- Store all task-created temporary files, scratch code, patches, backups, logs, and intermediate artifacts exclusively in `<main-repository>/.tmp/`. Do not use system TEMP, user-profile temporary directories, or sibling folders for these files.
+- This applies to the coordinator and every delegated agent. Parallel work must use explicit file ownership within the main repository; it does not authorize external worktrees.
+- These instructions override older project plans that prescribe external worktrees. Do not relocate existing files or delete existing worktrees merely to enforce this rule.

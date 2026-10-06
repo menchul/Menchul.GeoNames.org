@@ -6,64 +6,63 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org.Importers
+namespace Menchul.Import.GeoNames.org.Importers;
+
+internal sealed class TimeZonesImporter : BaseImporter
 {
-    internal sealed class TimeZonesImporter : BaseImporter
+    public TimeZonesImporter(GeoNamesOrgDbContext dbContext, ILogger<TimeZonesImporter> logger, ImporterParameters importerParameters)
+        : base(dbContext, logger, importerParameters)
     {
-        public TimeZonesImporter(GeoNamesOrgDbContext dbContext, ILogger<TimeZonesImporter> logger, ImporterParameters importerParameters)
-            : base(dbContext, logger, importerParameters)
+    }
+
+    public override byte Order => 3;
+
+    protected override string FileURL => __baseUrl + DumpFileNames.TimeZones;
+
+    protected override ulong FirstRow => 2;
+
+    protected override async Task ImportData()
+    {
+        await __dbContext.TimeZones.ExecuteDeleteAsync();
+
+        await __dbContext.SaveChangesAsync();
+
+
+        string[] lines = await File.ReadAllLinesAsync(LocalFileName, __encoding);
+
+        for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
         {
-        }
+            string line = lines[i];
+            string[] values = line.Split('\t');
 
-        public override byte Order => 3;
+            string name = values[1];
+            string country = values[0];
+            decimal gmt = decimal.Parse(values[2], __numberFormatInfo);
+            decimal dst = decimal.Parse(values[3], __numberFormatInfo);
+            decimal raw = decimal.Parse(values[4], __numberFormatInfo);
 
-        protected override string FileURL => __baseUrl + "timeZones.txt";
-
-        protected override ulong FirstRow => 2;
-
-        protected override async Task ImportData()
-        {
-            await __dbContext.TimeZones.ExecuteDeleteAsync();
-
-            await __dbContext.SaveChangesAsync();
-
-
-            string[] lines = await File.ReadAllLinesAsync(LocalFileName, __encoding);
-
-            for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
+            try
             {
-                string line = lines[i];
-                string[] values = line.Split('\t');
-
-                string name = values[1];
-                string country = values[0];
-                decimal gmt = decimal.Parse(values[2], __numberFormatInfo);
-                decimal dst = decimal.Parse(values[3], __numberFormatInfo);
-                decimal raw = decimal.Parse(values[4], __numberFormatInfo);
-
-                try
+                var entity = new Menchul.GeoNames.org.Models.TimeZone
                 {
-                    var entity = new Menchul.GeoNames.org.Models.TimeZone
-                    {
-                        Name = name,
-                        CountryCode = country,
-                        GMTOffset = gmt,
-                        DSTOffset = dst,
-                        RawOffset = raw
-                    };
+                    Name = name,
+                    CountryCode = country,
+                    GMTOffset = gmt,
+                    DSTOffset = dst,
+                    RawOffset = raw
+                };
 
-                    await __dbContext.TimeZones.AddAsync(entity);
-                }
-                catch (Exception exception)
-                {
-                    __logger.LogError(exception, exception.Message);
-
-                    throw;
-                }
+                await __dbContext.TimeZones.AddAsync(entity);
             }
+            catch (Exception exception)
+            {
+                __logger.LogError(exception, exception.Message);
 
-
-            await __dbContext.SaveChangesAsync();
+                throw;
+            }
         }
+
+
+        await __dbContext.SaveChangesAsync();
     }
 }

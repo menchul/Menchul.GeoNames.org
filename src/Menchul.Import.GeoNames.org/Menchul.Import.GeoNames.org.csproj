@@ -36,4 +36,8 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Menchul.Import.GeoNames.org.IntegrationTests" />
+    </ItemGroup>
+
 </Project>

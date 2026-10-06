@@ -1,0 +1,32 @@
+2.  General Technological and Non-Functional Requirements
+  2.1.  General code requirements
+    2.1.1.  General rules:
+      2.1.1.1.  Code and file formatting MUST match the .editorconfig file.
+      2.1.1.2.  .editorconfig should only be 1 and located in the root of the repository.
+      2.1.1.3.  All other files and configurations must match .editorconfig.
+    2.1.2.  C# .NET:
+      2.1.2.1.  Calculations in return statements are forbidden; instead of return a + b;, use: int result = a + b; return result; Except constants and defaults.
+      2.1.2.2.  Use var if the variable type is explicit; instead of var result = a + b; use int result = a + b;. Always var = new object();!!!
+      2.1.2.3.  Only variables/constants can be passed as method parameters except Linq.
+      2.1.2.4.  No characters are allowed after the final } in a file.
+      2.1.2.5.  Do not create private classes; if a separate class is needed, create it as internal.
+      2.1.2.6.  Do not add comments to the code. If your code needs explanation - it is a bad code. Variables, methods and objects names must be clear and self-explainable.
+      2.1.2.7.  Do not delete existing comments only like /**/ or ///.
+      2.1.2.8.  If the previous line was not ended by character { should be an empty line before keywords: if, return, for, foreach, while.
+      2.1.2.9.  Rule: 1 file - 1 class/record/interface/enum/struct.
+      2.1.2.10.  class/record/interface/enum/struct must have minimal possible visibility starting from internal; public allowed for controllers and when this type will be used out of current   application/library.
+      2.1.2.11.  All classes/records that are not DTO and not DB entities must be sealed.
+      2.1.2.12.  In CS files using (this not about using for IDispose) could be only before namespace. Ignore *.Designer.cs
+      2.1.2.13.  Razor pages C# code should be stored in a separate CS file (for example, if Blazor page name is MainLayout.razor, C# code should be in file MainLayout.razor.cs).
+      2.1.2.14.  Never mix different languages in 1 file.
+      2.1.2.15.  Same for RAZOR/HTML pages: if you need CSS or JS - put it in a separate file.
+      2.1.2.16.  Do not use public anonymous/tuple input/output parameters for methods.
+    2.1.3.  XML and XML-like files [*.csproj, *.targets, *.props]:
+      2.1.3.1.  All files MUST have 1 line:<?xml version="1.0" encoding="utf-8" standalone="yes"?>.
+      2.1.3.2.  Do not add a trailing newline when insert_final_newline = false.
+      2.1.3.3.  The last byte in the file must be >.
+      2.1.3.4.  Files [*.csproj, *.targets, *.props] must end exactly with </Project>.
+      2.1.3.5.  Ignore files: NLog.xsd
+    2.1.4.  csproj:
+      2.1.4.1.  Do NOT add packages as PackageReference; you need to create a separate package.targets file, removed existed <PackageReference> and add next line:<Import Project="..\targets\package.targets" />.
+      2.1.4.2.  Do NOT use <ImplicitUsings>enable</ImplicitUsings>; use <ImplicitUsings>disable</ImplicitUsings> and add explicit using directives before namespace in each CS file.

@@ -9,118 +9,120 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org.Importers
-{
-    internal class FeatureCodesImporter : BaseImporter
-    {
-        private static readonly List<string> __languages = ["bg", "nb", "nn", "no", "sv"];
+namespace Menchul.Import.GeoNames.org.Importers;
 
-        public FeatureCodesImporter(GeoNamesOrgDbContext dbContext, ILogger<FeatureCodesImporter> logger, ImporterParameters importerParameters)
-            : base(dbContext, logger, importerParameters)
+internal class FeatureCodesImporter : BaseImporter
+{
+    private static readonly List<string> __languages = ["bg", "nb", "nn", "no", "sv"];
+
+    public FeatureCodesImporter(GeoNamesOrgDbContext dbContext, ILogger<FeatureCodesImporter> logger, ImporterParameters importerParameters)
+        : base(dbContext, logger, importerParameters)
+    {
+    }
+
+    public override byte Order => 1;
+
+    protected override string FileURL => __baseUrl + DumpFileNames.FeatureCodesEn;
+
+    protected override async Task ImportData()
+    {
+        foreach (string language in __languages)
         {
+            string downloadFileName = $"featureCodes_{language}.txt";
+            string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
+
+            if (File.Exists(localFileName))
+            {
+                continue;
+            }
+
+            string fileURL = __baseUrl + downloadFileName;
+
+            await DownloadFile(fileURL, localFileName);
         }
 
-        public override byte Order => 1;
 
-        protected override string FileURL => __baseUrl + "featureCodes_en.txt";
+        await __dbContext.FeatureCodeNames.ExecuteDeleteAsync();
 
-        protected override async Task ImportData()
+        await __dbContext.FeatureCodes.ExecuteDeleteAsync();
+
+        await __dbContext.SaveChangesAsync();
+
+        if (!__languages.Contains("en"))
         {
-            foreach (string language in __languages)
-            {
-                string downloadFileName = $"featureCodes_{language}.txt";
-                string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
+            __languages.Add("en");
+        }
 
-                if (File.Exists(localFileName))
+        var featureCodes = new List<FeatureCode>();
+        var names = new List<FeatureCodeName>();
+
+        foreach (string language in __languages)
+        {
+            string downloadFileName = $"featureCodes_{language}.txt";
+            string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
+
+            string[] lines = await File.ReadAllLinesAsync(localFileName, __encoding);
+
+
+            for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
+            {
+                string line = lines[i];
+                string[] values = line.Split('\t');
+
+                if (!values[0].Contains('.'))
                 {
                     continue;
                 }
 
-                string fileURL = __baseUrl + downloadFileName;
-
-                await DownloadFile(fileURL, localFileName);
-            }
-
-
-            await __dbContext.FeatureCodes.ExecuteDeleteAsync();
-
-            await __dbContext.SaveChangesAsync();
-
-
-
-            __languages.Add("en");
-
-            var featureCodes = new List<FeatureCode>();
-            var names = new List<FeatureCodeName>();
-
-            foreach (string language in __languages)
-            {
-                string downloadFileName = $"featureCodes_{language}.txt";
-                string localFileName = Path.Combine(__importerParameters.TempFolder!, downloadFileName);
-
-                string[] lines = await File.ReadAllLinesAsync(localFileName, __encoding);
-
-
-                for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
+                try
                 {
-                    string line = lines[i];
-                    string[] values = line.Split('\t');
+                    string featureCodeCode = values[0].Substring(2);
+                    char featureClassCode = values[0][0];
+                    string name = values[1];
+                    string? description = GetNullIfEmpty(values[2]);
 
-                    if (!values[0].Contains('.'))
+                    bool fcEx = featureCodes.Any(x => x.Code == featureCodeCode);
+
+                    if (!fcEx)
                     {
-                        continue;
+                        var featureCode = new FeatureCode
+                        {
+                            Code = featureCodeCode,
+                            FeatureClassCode = featureClassCode
+                        };
+
+                        featureCodes.Add(featureCode);
                     }
 
-                    try
+                    bool nEx = names.Any(x => x.Language == language && x.FeatureCodeCode == featureCodeCode);
+
+                    if (!nEx)
                     {
-                        string featureCodeCode = values[0].Substring(2);
-                        char featureClassCode = values[0][0];
-                        string name = values[1];
-                        string? description = GetNullIfEmpty(values[2]);
-
-                        bool fcEx = featureCodes.Any(x => x.Code == featureCodeCode);
-
-                        if (!fcEx)
+                        var fcn = new FeatureCodeName
                         {
-                            var featureCode = new FeatureCode
-                            {
-                                Code = featureCodeCode,
-                                FeatureClassCode = featureClassCode
-                            };
+                            FeatureCodeCode = featureCodeCode,
+                            Language = language,
+                            Name = name,
+                            Description = description
+                        };
 
-                            featureCodes.Add(featureCode);
-                        }
-
-                        bool nEx = names.Any(x => x.Language == language && x.FeatureCodeCode == featureCodeCode);
-
-                        if (!nEx)
-                        {
-                            var fcn = new FeatureCodeName
-                            {
-                                FeatureCodeCode = featureCodeCode,
-                                Language = language,
-                                Name = name,
-                                Description = description
-                            };
-
-                            names.Add(fcn);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        __logger.LogError(exception, exception.Message);
-
-                        throw;
+                        names.Add(fcn);
                     }
                 }
+                catch (Exception exception)
+                {
+                    __logger.LogError(exception, exception.Message);
+
+                    throw;
+                }
             }
-
-
-            await __dbContext.FeatureCodes.AddRangeAsync(featureCodes);
-
-            await __dbContext.FeatureCodeNames.AddRangeAsync(names);
-
-            await __dbContext.SaveChangesAsync();
         }
+
+
+        await __dbContext.FeatureCodes.AddRangeAsync(featureCodes);
+
+        await __dbContext.FeatureCodeNames.AddRangeAsync(names);
+
+        await __dbContext.SaveChangesAsync();
     }
 }

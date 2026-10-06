@@ -1,0 +1,12 @@
+---
+description: Global rules
+globs: *
+alwaysApply: true
+---
+- If my commands/tasks are unclear or ambiguous, ask for clarification.
+- Respond ONLY in the language used to address you.
+- When generating code or scripts, you must follow the rules defined in `.editorconfig` file(s). First, locate all `.editorconfig` files and generate code based on their specifications.
+- All rules must be shown before answer in list with mark✅ include this. I want know, what rules was accepted before your answer.
+- Follow rules from file `General Technological and Non-Functional Requirements.txt`
+- Task is finished ONLY when: (1) user task conditions are met, (2) build succeeds, (3) rules from NFR / `.editorconfig` / `.cursor/rules/*` and any extra user conditions for this chat are verified. See `definition-of-done.mdc`.
+- Ignore files: NLog.xsd

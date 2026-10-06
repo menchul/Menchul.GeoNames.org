@@ -9,84 +9,83 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Menchul.Import.GeoNames.org.Importers
+namespace Menchul.Import.GeoNames.org.Importers;
+
+internal class ISOLanguagesImporter : BaseImporter
 {
-    internal class ISOLanguagesImporter : BaseImporter
+    public ISOLanguagesImporter(GeoNamesOrgDbContext dbContext, ILogger<ISOLanguagesImporter> logger, ImporterParameters importerParameters)
+        : base(dbContext, logger, importerParameters)
     {
-        public ISOLanguagesImporter(GeoNamesOrgDbContext dbContext, ILogger<ISOLanguagesImporter> logger, ImporterParameters importerParameters)
-            : base(dbContext, logger, importerParameters)
+    }
+
+    public override byte Order => 0;
+
+    protected override string FileURL => __baseUrl + DumpFileNames.IsoLanguageCodes;
+
+    protected override ulong FirstRow => 2;
+
+    protected override async Task ImportData()
+    {
+        await __dbContext.ISOLanguages.ExecuteDeleteAsync();
+
+        await __dbContext.SaveChangesAsync();
+
+
+        string[] lines = await File.ReadAllLinesAsync(LocalFileName, __encoding);
+
+        var languages = new List<ISOLanguage>();
+        var duplicates = new List<string>();
+
+        for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
         {
-        }
+            string line = lines[i];
+            string[] values = line.Split('\t');
 
-        public override byte Order => 0;
-
-        protected override string FileURL => __baseUrl + "iso-languagecodes.txt";
-
-        protected override ulong FirstRow => 2;
-
-        protected override async Task ImportData()
-        {
-            await __dbContext.ISOLanguages.ExecuteDeleteAsync();
-
-            await __dbContext.SaveChangesAsync();
-
-
-            string[] lines = await File.ReadAllLinesAsync(LocalFileName, __encoding);
-
-            var languages = new List<ISOLanguage>();
-            var duplicates = new List<string>();
-
-            for (ulong i = FirstRow - 1; i < (ulong)lines.Length; i++)
+            try
             {
-                string line = lines[i];
-                string[] values = line.Split('\t');
+                string? iso3 = GetNullIfEmpty(values[0]);
+                string? iso2 = GetNullIfEmpty(values[1]);
 
-                try
+                if (iso2 != null && iso2.Contains('/'))
                 {
-                    string? iso3 = GetNullIfEmpty(values[0]);
-                    string? iso2 = GetNullIfEmpty(values[1]);
-
-                    if (iso2 != null && iso2.Contains('/'))
-                    {
-                        iso2 = iso2.Split('/', StringSplitOptions.TrimEntries).Last();
-                        iso2 = iso2.Substring(0, 3);
-                    }
-
-                    iso3 ??= iso2;
-
-                    bool isoAlreadyExists = languages.Any(x => x.ISO639_3 == iso3);
-
-                    if (isoAlreadyExists)
-                    {
-                        duplicates.Add(iso3!);
-
-                        continue;
-                    }
-
-                    var language = new ISOLanguage
-                    {
-                        ISO639_3 = iso3!,
-                        ISO639_2 = iso2,
-                        ISO639_1 = GetNullIfEmpty(values[2]),
-                        Name = values[3]
-                    };
-
-                    languages.Add(language);
+                    iso2 = iso2.Split('/', StringSplitOptions.TrimEntries).Last();
+                    iso2 = iso2.Substring(0, 3);
                 }
-                catch (Exception exception)
+
+                iso3 ??= iso2;
+
+                bool isoAlreadyExists = languages.Any(x => x.ISO639_3 == iso3);
+
+                if (isoAlreadyExists)
                 {
-                    __logger.LogError(exception, exception.Message);
+                    duplicates.Add(iso3!);
 
-                    throw;
+                    continue;
                 }
+
+                var language = new ISOLanguage
+                {
+                    ISO639_3 = iso3!,
+                    ISO639_2 = iso2,
+                    ISO639_1 = GetNullIfEmpty(values[2]),
+                    Name = values[3]
+                };
+
+                languages.Add(language);
             }
+            catch (Exception exception)
+            {
+                __logger.LogError(exception, exception.Message);
 
-
-            await __dbContext.ISOLanguages.AddRangeAsync(languages);
-
-            await __dbContext.SaveChangesAsync();
-
-            await File.WriteAllLinesAsync("iso-languagecodes_duplicates.txt", duplicates);
+                throw;
+            }
         }
+
+
+        await __dbContext.ISOLanguages.AddRangeAsync(languages);
+
+        await __dbContext.SaveChangesAsync();
+
+        await File.WriteAllLinesAsync("iso-languagecodes_duplicates.txt", duplicates);
     }
 }

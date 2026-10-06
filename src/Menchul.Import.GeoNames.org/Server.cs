@@ -1,13 +1,12 @@
-namespace Menchul.Import.GeoNames.org
+namespace Menchul.Import.GeoNames.org;
+
+internal enum Server
 {
-    internal enum Server
-    {
-        None,
+    None,
 
-        MSSQL,
+    MSSQL,
 
-        PostgreSQL,
+    PostgreSQL,
 
-        SQLite
-    }
+    SQLite
 }

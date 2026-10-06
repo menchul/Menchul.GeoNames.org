@@ -1,138 +1,137 @@
 using Import.GeoNames.org.Properties;
 using System;
 
-namespace Menchul.Import.GeoNames.org
+namespace Menchul.Import.GeoNames.org;
+
+internal static class CommandLineTools
 {
-    internal static class CommandLineTools
+    public static ImporterParameters ParseCommandLineParameters(string[] args)
     {
-        public static ImporterParameters ParseCommandLineParameters(string[] args)
+        var importParameters = new ImporterParameters();
+
+        for (int i = 0; i < args.Length; i++)
         {
-            var importParameters = new ImporterParameters();
+            string argument = args[i];
+            argument = argument.Trim();
 
-            for (int i = 0; i < args.Length; i++)
+            switch (argument)
             {
-                string argument = args[i];
-                argument = argument.Trim();
+                case CommandLineConstants.HelpQuestion:
+                case CommandLineConstants.HelpShort:
+                case CommandLineConstants.HelpSlash:
+                case CommandLineConstants.HelpLong:
+                case CommandLineConstants.HelpWord:
+                    ShowHelp();
 
-                switch (argument)
-                {
-                    case "/?":
-                    case "-h":
-                    case "/h":
-                    case "--help":
-                    case "/help":
-                        ShowHelp();
+                    throw new Exception();
+                case CommandLineConstants.Server:
+                    i++;
+
+                    if (args.Length < i + 1)
+                    {
+                        WriteError("Bad Server");
 
                         throw new Exception();
-                    case "--server":
-                        i++;
+                    }
 
-                        if (args.Length < i + 1)
-                        {
-                            WriteError("Bad Server");
+                    string srv = args[i].Trim();
 
-                            throw new Exception();
-                        }
+                    if (!Enum.TryParse(srv, true, out Server serverType))
+                    {
+                        string message = $"DB server \"{srv}\" is not recognized";
 
-                        string srv = args[i].Trim();
+                        throw new ArgumentOutOfRangeException(CommandLineConstants.Server, message);
+                    }
 
-                        if (!Enum.TryParse(srv, true, out Server serverType))
-                        {
-                            string message = $"DB server \"{srv}\" is not recognized";
+                    importParameters.Server = serverType;
 
-                            throw new ArgumentOutOfRangeException("--server", message);
-                        }
+                    switch (serverType)
+                    {
+                        case Server.PostgreSQL:
+                            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+                            break;
+                    }
 
-                        importParameters.Server = serverType;
+                    break;
+                case CommandLineConstants.ConnectionString:
+                case CommandLineConstants.Connection:
+                case CommandLineConstants.ConnectionStringShort:
+                    i++;
 
-                        switch (serverType)
-                        {
-                            case Server.PostgreSQL:
-                                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-                                break;
-                        }
+                    if (args.Length < i + 1)
+                    {
+                        WriteError(Resources.BAD_CONNECTION_STRING);
 
-                        break;
-                    case "--connectionString":
-                    case "--connection":
-                    case "-cs":
-                        i++;
+                        throw new Exception();
+                    }
 
-                        if (args.Length < i + 1)
-                        {
-                            WriteError(Resources.BAD_CONNECTION_STRING);
+                    string connectionString = args[i];
 
-                            throw new Exception();
-                        }
+                    if (string.IsNullOrWhiteSpace(connectionString))
+                    {
+                        WriteError(Resources.BAD_CONNECTION_STRING);
 
-                        string connectionString = args[i];
+                        throw new Exception();
+                    }
 
-                        if (string.IsNullOrWhiteSpace(connectionString))
-                        {
-                            WriteError(Resources.BAD_CONNECTION_STRING);
+                    importParameters.ConnectionString = connectionString;
 
-                            throw new Exception();
-                        }
+                    break;
+                case CommandLineConstants.TempFolder:
+                case CommandLineConstants.TempFolderShort:
+                    i++;
 
-                        importParameters.ConnectionString = connectionString;
+                    if (args.Length < i + 1)
+                    {
+                        WriteError(Resources.BAD_TEMPORARY_FOLDER);
 
-                        break;
-                    case "--tempFolder":
-                    case "-tf":
-                        i++;
+                        throw new Exception();
+                    }
 
-                        if (args.Length < i + 1)
-                        {
-                            WriteError(Resources.BAD_TEMPORARY_FOLDER);
+                    string tempFolderName = args[i];
+                    bool correctTempFolder = !string.IsNullOrWhiteSpace(tempFolderName);
 
-                            throw new Exception();
-                        }
+                    if (!correctTempFolder)
+                    {
+                        WriteError(Resources.BAD_TEMPORARY_FOLDER);
 
-                        string tempFolderName = args[i];
-                        bool correctTempFolder = !string.IsNullOrWhiteSpace(tempFolderName);
+                        throw new Exception();
+                    }
 
-                        if (!correctTempFolder)
-                        {
-                            WriteError(Resources.BAD_TEMPORARY_FOLDER);
+                    importParameters.TempFolder = tempFolderName;
 
-                            throw new Exception();
-                        }
-
-                        importParameters.TempFolder = tempFolderName;
-
-                        break;
-                    case "--importOnlyAP":
-                        importParameters.ImportOnlyAP = true;
-                        break;
-                    case "--normalizeData":
-                        importParameters.NormalizeData = true;
-                        break;
-                    case "--keepTempFiles":
-                        importParameters.KeepTempFiles = true;
-                        break;
-                }
+                    break;
+                case CommandLineConstants.ImportOnlyAP:
+                    importParameters.ImportOnlyAP = true;
+                    break;
+                case CommandLineConstants.NormalizeData:
+                    importParameters.NormalizeData = true;
+                    break;
+                case CommandLineConstants.KeepTempFiles:
+                    importParameters.KeepTempFiles = true;
+                    break;
             }
-
-            return importParameters;
         }
 
-        public static void ShowHelp()
+        return importParameters;
+    }
+
+    public static void ShowHelp()
+    {
+        Console.WriteLine(@"-c , -connectionString      Connection String for connecting to MS SQL Server.");
+        Console.WriteLine(@"-tf, -tempFolder            Temporary folder, where files will be saved. If not set. will be used system TEMP folder.");
+        Console.WriteLine(@"-cleardb                    Clear whall DataBase.");
+    }
+
+    public static void WriteError(string errorMessage)
+    {
+        lock (Console.Error)
         {
-            Console.WriteLine(@"-c , -connectionString      Connection String for connecting to MS SQL Server.");
-            Console.WriteLine(@"-tf, -tempFolder            Temporary folder, where files will be saved. If not set. will be used system TEMP folder.");
-            Console.WriteLine(@"-cleardb                    Clear whall DataBase.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Error.WriteLine(errorMessage);
+            Console.ResetColor();
         }
 
-        public static void WriteError(string errorMessage)
-        {
-            lock (Console.Error)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Error.WriteLine(errorMessage);
-                Console.ResetColor();
-            }
-
-            Console.ReadKey();
-        }
+        Console.ReadKey();
     }
 }

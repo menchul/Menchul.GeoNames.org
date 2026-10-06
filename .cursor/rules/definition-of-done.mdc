@@ -1,0 +1,28 @@
+---
+description: Task is done only after requirements + build + full rule verification
+alwaysApply: true
+---
+# Definition of Done (mandatory gate)
+
+A task is **NOT** complete after feature work alone. Hand over / say "done" **ONLY** when all three pass:
+
+1. **Task conditions** — every explicit user requirement for this task is implemented.
+2. **Successful build** — affected project(s) build cleanly (`dotnet build` or equivalent); fix until success (see `dotnet.mdc`).
+3. **Rule verification** — re-check and confirm compliance with:
+   - `General Technological and Non-Functional Requirements.txt`
+   - root `.editorconfig`
+   - `.cursor/rules/global.mdc`
+   - `.cursor/rules/dotnet.mdc`
+   - `.cursor/rules/xml-targets-eof-and-eol.mdc` (for csproj/props/targets)
+   - any extra conditions the user stated in the conversation
+
+## Before declaring done
+
+- Run a concrete check for **2.1.2.4**: every edited/created `*.cs` (exclude `bin/`/`obj/`) must end with byte `}` — no trailing newline/whitespace.
+- For edited `*.csproj`/`*.targets`/`*.props`: last bytes must be exactly `</Project>` with no trailing characters.
+- Spot-check other NFR items touched by the change (sealed, 1 type/file, `using` before namespace, no comments added, no wrap of call args, etc.).
+- If any check fails: fix, rebuild, re-verify. Do **not** claim the task is finished.
+
+## Priority
+
+These gates are not optional and are not overridden by speed, "good enough", or communication brevity. Build success does **not** replace NFR/rule checks.
